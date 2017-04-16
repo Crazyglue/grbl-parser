@@ -1,0 +1,46 @@
+{
+  "gcode": {
+    "G0": {
+      "code": "G0",
+      "name": "Movement",
+      "description": "The last movement command"
+    },
+    "G54": {
+      "code": "G54",
+      "name": "WCS",
+      "description": "Default Work Coordinate System"
+    },
+    "G17": {
+      "code": "G17",
+      "name": "Plane",
+      "description": "X Y (default)"
+    },
+    "G21": {
+      "code": "G21",
+      "name": "Units",
+      "description": "Current units"
+    },
+    "G90": {
+      "code": "G90",
+      "name": "Distance Mode",
+      "description": "Absolute distance mode"
+    },
+    "G94": {
+      "code": "G94",
+      "name": "Feed Rate Mode",
+      "description": "Units per minute mode"
+    }
+  },
+  "mcode": {
+    "M5": {
+      "code": "M5",
+      "name": "Spindle",
+      "description": "Spindle stopped"
+    },
+    "M9": {
+      "code": "M9",
+      "name": "Coolant",
+      "description": "Coolant stopped"
+    }
+  }
+}
