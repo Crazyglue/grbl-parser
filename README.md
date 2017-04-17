@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/Crazyglue/node-grbl-parser/badge.svg?branch=master)](https://coveralls.io/github/Crazyglue/node-grbl-parser?branch=master) [![Build Status](https://travis-ci.org/Crazyglue/node-grbl-parser.svg?branch=master)](https://travis-ci.org/Crazyglue/node-grbl-parser)
+[![Coverage Status](https://coveralls.io/repos/github/Crazyglue/grbl-parser/badge.svg?branch=master)](https://coveralls.io/github/Crazyglue/grbl-parser?branch=master) [![Build Status](https://travis-ci.org/Crazyglue/node-grbl-parser.svg?branch=master)](https://travis-ci.org/Crazyglue/node-grbl-parser)
 
 # grbl-parser
 Javascript based grbl parser
