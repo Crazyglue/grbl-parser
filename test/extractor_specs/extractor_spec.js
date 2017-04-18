@@ -10,8 +10,12 @@ describe('Extractor', function() {
   describe('#errorReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        code: "20",
-        message: "Unsupported or invalid g-code command found in block."
+        data: {
+          code: "20",
+          message: "Unsupported or invalid g-code command found in block."
+        },
+        input: validStrings.validError,
+        type: "grbl-error"
       }
 
       var report = extractor.errorReport(validStrings.validError)
@@ -23,7 +27,11 @@ describe('Extractor', function() {
   describe('#grblInitReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        firmwareVersion: 'Grbl 1.1f'
+        data: {
+          firmwareVersion: 'Grbl 1.1f'
+        },
+        input: validStrings.validInitialization,
+        type: "grbl-init"
       }
 
       var report = extractor.grblInitReport(validStrings.validInitialization)
@@ -35,8 +43,12 @@ describe('Extractor', function() {
   describe('#alarmReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        code: 9,
-        message: 'Homing fail. Could not find limit switch within search distance.'
+        data: {
+          code: 9,
+          message: 'Homing fail. Could not find limit switch within search distance.'
+        },
+        input: validStrings.validAlarm,
+        type: "grbl-alarm"
       }
 
       var report = extractor.alarmReport(validStrings.validAlarm)
@@ -48,15 +60,24 @@ describe('Extractor', function() {
   describe('#buildVersionReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        firmwareVersion: '1.1f.20170131'
+        data: {
+          firmwareVersion: '1.1f.20170131'
+        },
+        input: validStrings.validBuildVersion,
+        type: "build-version"
+
       }
 
       var report = extractor.buildVersionReport(validStrings.validBuildVersion)
       expect(report).to.deep.equal(mockedReport)
 
       var mockedReportB = {
-        firmwareVersion: '1.1e.20170131',
-        buildString: "My OEM string"
+        data: {
+          firmwareVersion: '1.1e.20170131',
+          buildString: "My OEM string"
+        },
+        input: validStrings.validBuildVersionB,
+        type: "build-version"
       }
 
       var report = extractor.buildVersionReport(validStrings.validBuildVersionB)
@@ -67,10 +88,14 @@ describe('Extractor', function() {
   describe('#buildOptionsReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        options: [
-          { code: 'V', message: 'Variable spindle enabled' }
-        ],
-        extras: [ '15', '128' ]
+        data: {
+          options: [
+            { code: 'V', message: 'Variable spindle enabled' }
+          ],
+          extras: [ '15', '128' ]
+        },
+        input: validStrings.validBuildOptions,
+        type: "build-options"
       }
 
       var report = extractor.buildOptionsReport(validStrings.validBuildOptions)
@@ -82,22 +107,30 @@ describe('Extractor', function() {
   describe('#settingsReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        code: "10",
-        value: "255.5",
-        setting: "Status report options",
-        units: "mask",
-        description: "Alters data included in status reports."
+        type: "grbl-setting",
+        data: {
+          code: "10",
+          value: "255.5",
+          setting: "Status report options",
+          units: "mask",
+          description: "Alters data included in status reports."
+        },
+        input: validStrings.validSetting
       }
 
       var report = extractor.settingsReport(validStrings.validSetting)
       expect(report).to.deep.equal(mockedReport)
 
       var mockedReportB = {
-        code: "6",
-        value: "1",
-        setting: "Invert probe pin",
-        units: "boolean",
-        description: "Inverts the probe input pin signal."
+        type: "grbl-setting",
+        data: {
+          code: "6",
+          value: "1",
+          setting: "Invert probe pin",
+          units: "boolean",
+          description: "Inverts the probe input pin signal."
+        },
+        input: validStrings.validSettingB
       }
 
       var reportB = extractor.settingsReport(validStrings.validSettingB)
