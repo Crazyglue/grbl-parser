@@ -32,9 +32,7 @@ parser.parseData(myString)
 #### Bind to all responses
 
 ```javascript
-parser.callbackList.forEach((callback) => {
-  parser.addListener(callback, myCallback)
-})
+parser.addToAllListener(myCallback)
 ```
 
 #### Status message output
@@ -46,40 +44,44 @@ parser.parseData("<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120
 Returns:
 
 ```javascript
- {
-  machinePosition: {
-    x: 0,
-    y: 0,
-    z: 0
+{
+  data: {
+    machinePosition: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    buffer: {
+      availableBlocks: 15,
+      availableRXBytes: 128
+    },
+    feedSpindle: {
+      realtimeFeedrate: 675.5,
+      realtimeSpindle: 24000
+    },
+    workcoordinateOffset: {
+      x: 0,
+      y: -5.2,
+      z: 306.351
+    },
+    status: {
+      code: 0,
+      message: "Hold complete. Ready to resume.",
+      state: 'Hold'
+    },
+    override: {
+      feeds: 120,
+      rapids: 100,
+      spindle: 100
+    },
+    accessories: {
+      flood: true,
+      mist: true,
+      spindleDirection: 'clockwise'
+    }
   },
-  buffer: {
-    availableBlocks: 15,
-    availableRXBytes: 128
-  },
-  feedSpindle: {
-    realtimeFeedrate: 675.5,
-    realtimeSpindle: 24000
-  },
-  workcoordinateOffset: {
-    x: 0,
-    y: -5.2,
-    z: 306.351
-  },
-  status: {
-    code: 0,
-    message: "Hold complete. Ready to resume.",
-    state: 'Hold'
-  },
-  override: {
-    feeds: 120,
-    rapids: 100,
-    spindle: 100
-  },
-  accessories: {
-    flood: true,
-    mist: true,
-    spindleDirection: 'clockwise'
-  }
+  type: "grbl-status",
+  input: "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 }
 ```
 
