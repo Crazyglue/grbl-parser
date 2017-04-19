@@ -15,7 +15,7 @@ describe('Extractor', function() {
           message: "Unsupported or invalid g-code command found in block."
         },
         input: validStrings.validError,
-        type: "grbl-error"
+        type: "error"
       }
 
       var report = extractor.errorReport(validStrings.validError)
@@ -31,7 +31,7 @@ describe('Extractor', function() {
           firmwareVersion: 'Grbl 1.1f'
         },
         input: validStrings.validInitialization,
-        type: "grbl-init"
+        type: "initialize"
       }
 
       var report = extractor.grblInitReport(validStrings.validInitialization)
@@ -48,7 +48,7 @@ describe('Extractor', function() {
           message: 'Homing fail. Could not find limit switch within search distance.'
         },
         input: validStrings.validAlarm,
-        type: "grbl-alarm"
+        type: "alarm"
       }
 
       var report = extractor.alarmReport(validStrings.validAlarm)
@@ -64,7 +64,7 @@ describe('Extractor', function() {
           firmwareVersion: '1.1f.20170131'
         },
         input: validStrings.validBuildVersion,
-        type: "build-version"
+        type: "buildVersion"
 
       }
 
@@ -77,7 +77,7 @@ describe('Extractor', function() {
           buildString: "My OEM string"
         },
         input: validStrings.validBuildVersionB,
-        type: "build-version"
+        type: "buildVersion"
       }
 
       var report = extractor.buildVersionReport(validStrings.validBuildVersionB)
@@ -95,7 +95,7 @@ describe('Extractor', function() {
           extras: [ '15', '128' ]
         },
         input: validStrings.validBuildOptions,
-        type: "build-options"
+        type: "buildOptions"
       }
 
       var report = extractor.buildOptionsReport(validStrings.validBuildOptions)
@@ -107,7 +107,7 @@ describe('Extractor', function() {
   describe('#settingsReport()', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
-        type: "grbl-setting",
+        type: "setting",
         data: {
           code: "10",
           value: "255.5",
@@ -122,7 +122,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
 
       var mockedReportB = {
-        type: "grbl-setting",
+        type: "setting",
         data: {
           code: "6",
           value: "1",

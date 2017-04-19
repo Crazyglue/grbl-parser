@@ -45,7 +45,7 @@ describe('StatusExtractor', function() {
             spindleDirection: 'clockwise'
           }
         },
-        type: 'grbl-status',
+        type: 'status',
         input: validStrings.validStatus
       }
 
@@ -67,7 +67,7 @@ describe('StatusExtractor', function() {
             realtimeSpindle: 0
           }
         },
-        type: 'grbl-status',
+        type: 'status',
         input: validStrings.validStatusB
       }
 
@@ -80,7 +80,7 @@ describe('StatusExtractor', function() {
             state: "Idle"
           }
         },
-        type: 'grbl-status',
+        type: 'status',
         input: validStrings.validStatusC
       }
 
@@ -112,7 +112,7 @@ describe('StatusExtractor', function() {
             mist: false
           }
         },
-        type: 'grbl-status',
+        type: 'status',
         input: validStrings.validStatusD
       }
 
