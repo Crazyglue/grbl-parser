@@ -23,16 +23,47 @@ var myCallback = function(message) {
 }
 var myString = "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 
-parser.addListener("grbl-status-report", myCallback) // bind myCallback to grbl status reports
+parser.addListener("status", myCallback) // bind myCallback to grbl status reports
 parser.parseData(myString)
+```
+
+### Message types
+
+Use these to bind to specific message types
+
+```javascript
+"status",
+"success",
+"initialize",
+"alarm",
+"error",
+"setting",
+"feedbackMessage",
+"buildVersion",
+"buildOptions",
+"gcodeState",
+"helpMessage",
+"gcodeSystem",
+"probeResult",
+"echoMessage",
+"gcodeStartup"
+```
+
+You can programatically view/print all the message types:
+
+```javascript
+console.log(new GrblParser().messageTypes)
+// { status: "status", alarm: "alarm", ... }
 ```
 
 ### Examples
 
-#### Bind to all responses
+#### Bind callback to message types
 
 ```javascript
-parser.addToAllListeners(myCallback)
+parser.addListener("status", myStatusCallback)
+parser.addListener("alarm", myAlarmCallback)
+parser.addToAllListeners(myEverythingCallback)
 ```
 
 #### Status message output
@@ -79,7 +110,9 @@ parser.parseData("<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120
   type: "grbl-status",
   input: "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 }
+```
 
+```javascript
 parser.parseData("error:20")
 
 {
