@@ -46,7 +46,8 @@ Use these to bind to specific message types
 "gcodeSystem",
 "probeResult",
 "echoMessage",
-"gcodeStartup"
+"gcodeStartup",
+"unknown"
 ```
 
 You can programatically view/print all the message types:
