@@ -5,11 +5,11 @@ validStrings = require('./test/spec_constants').validStrings
 
 var parser = new GrblParser()
 
-function printParse(data) {
+var printParse = function(data) {
   console.log("parsed:", data);
 }
 
-parser.addToAllListener(printParse)
+parser.addToAllListeners(printParse)
 
 parser.parseData(validStrings.validError)
 parser.parseData(validStrings.validGcodeState)
