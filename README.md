@@ -39,11 +39,7 @@ parser.addToAllListeners(myCallback)
 
 ```javascript
 parser.parseData("<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>")
-```
 
-Returns:
-
-```javascript
 {
   data: {
     machinePosition: {
@@ -82,6 +78,17 @@ Returns:
   },
   type: "grbl-status",
   input: "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
+}
+
+parser.parseData("error:20")
+
+{
+  data: {
+    code: "20",
+    message: "Unsupported or invalid g-code command found in block."
+  },
+  input: "error:20",
+  type: "error"
 }
 ```
 
