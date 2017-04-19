@@ -191,7 +191,7 @@ describe('Checkers', function() {
     describe("for non-startup strings", function() {
       strings = constants.validStrings
       _.map(strings, function(value, key) {
-        if (value !== strings.validGcodeState)
+        if (value !== strings.validGcodeState && value !== strings.validGcodeStateB)
           it('should return false for ' + value, function() {
             expect(check.isGcodeState(value)).to.be.false
           })

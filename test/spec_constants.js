@@ -10,6 +10,7 @@ module.exports.validStrings = {
   validSettingB: "$6=1",
   validFeedbackMessage: "[MSG:‘$H’|’$X’ to unlock]",
   validGcodeState: "[GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]",
+  validGcodeStateB: "[GC:G0 G58 G17 G20 G91 G94 M5 M7 M9 T4 F100 S12000]",
   validHelpMessage: "[HLP:$$ $# $G $I $N $x=val $Nx=line $J=line $SLP $C $X $H ~ ! ? ctrl-x]",
   validBuildVersion: "[VER:1.1f.20170131:]",
   validBuildVersionB: "[VER:1.1e.20170131:My OEM string]",
