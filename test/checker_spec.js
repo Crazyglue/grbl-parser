@@ -9,19 +9,24 @@ describe('Checkers', function() {
       check = new Checker()
     })
 
-    describe('for valid status report strings', function(){
-      it('should return true for ' + constants.validStrings.validStatus, function() {
-        expect(check.isStatusReport(constants.validStrings.validStatus)).to.be.true
+    const validStatuses = [ constants.validStrings.validStatus, constants.validStrings.validStatusB, constants.validStrings.validStatusC, constants.validStrings.validStatusD, constants.validStrings.validStatusE, constants.validStrings.validStatusF ]
+
+    describe('for valid status report strings', function() {
+      _.map(validStatuses, function(value) {
+        it('should return true for ' + value, function() {
+          expect(check.isStatusReport(constants.validStrings.validStatus)).to.be.true
+        })
       })
+
     })
 
     describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validStatus && value !== strings.validStatusB  && value !== strings.validStatusC && value !== strings.validStatusD && value !== strings.validStatusE)
+      _.map(constants.validStrings, function(value, key) {
+        if (validStatuses.indexOf(value) < 0) {
           it('should return false for ' + value, function() {
             expect(check.isStatusReport(value)).to.be.false
           })
+        }
       });
     })
   })

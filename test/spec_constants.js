@@ -4,6 +4,7 @@ module.exports.validStrings = {
   validStatusC: "<Idle>",
   validStatusD: "<Run|MPos:0.000,0.000,0.000|FS:112,12000|Ov:120,110,100|A:C>",
   validStatusE: "<Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010>",
+  validStatusF: "<Hold,MPos:50.300,-120.000,0.000>",
   validInitialization: "Grbl 1.1f ['$' for help]",
   validInitializationB: "Grbl 0.9j ['$' for help]",
   validAlarm: "ALARM:9",
