@@ -18,7 +18,7 @@ describe('Checkers', function() {
     describe("for non-startup strings", function() {
       strings = constants.validStrings
       _.map(strings, function(value, key) {
-        if (value !== strings.validStatus && value !== strings.validStatusB  && value !== strings.validStatusC && value !== strings.validStatusD)
+        if (value !== strings.validStatus && value !== strings.validStatusB  && value !== strings.validStatusC && value !== strings.validStatusD && value !== strings.validStatusE)
           it('should return false for ' + value, function() {
             expect(check.isStatusReport(value)).to.be.false
           })
@@ -40,7 +40,7 @@ describe('Checkers', function() {
     describe("for non-startup strings", function() {
       strings = constants.validStrings
       _.map(strings, function(value, key) {
-        if (value !== strings.validInitialization)
+        if (value !== strings.validInitialization && value !== strings.validInitializationB)
           it('should return false for ' + value, function() {
             expect(check.isGrblInitialization(value)).to.be.false
           })

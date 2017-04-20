@@ -119,6 +119,38 @@ describe('StatusExtractor', function() {
       var reportD = statusExtractor.statusReport(validStrings.validStatusD)
       expect(reportD).to.deep.equal(mockedReportD)
 
+      var mockedReportE = {
+        data: {
+          status: {
+            state: "Idle"
+          },
+          machinePosition: {
+            x: 50.3,
+            y: -120,
+            z: 0
+          },
+          workPosition: {
+            x: -10.3,
+            y: 5.23,
+            z: 0
+          },
+          buffer: {
+            availableBlocks: 12,
+            availableRXBytes: 101
+          },
+          pins: [
+            { pin: "limit-x", on: false },
+            { pin: "limit-y", on: true },
+            { pin: "limit-z", on: false }
+          ]
+        },
+        type: 'status',
+        input: validStrings.validStatusE // Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010
+      }
+
+      var reportE = statusExtractor.statusReport(validStrings.validStatusE)
+      expect(reportE).to.deep.equal(mockedReportE)
+
     })
   })
 })
