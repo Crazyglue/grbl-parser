@@ -28,7 +28,7 @@ describe('Extractor', function() {
     it('should return a correctly formatted report object', function() {
       var mockedReport = {
         data: {
-          firmwareVersion: 'Grbl 1.1f'
+          firmwareVersion: '1.1f'
         },
         input: validStrings.validInitialization,
         type: "initialize"
