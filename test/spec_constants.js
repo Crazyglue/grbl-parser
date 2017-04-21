@@ -46,10 +46,14 @@ module.exports.validStrings = {
   ],
   buildOptions: [ "[OPT:V,15,128]" ],
   success: [ "ok" ],
-  gcodeSystem: [ "[G28:]" ],
+  gcodeSystem: [
+    "[G54:0.000,0.000,306.351]",
+    "[TLO:120.000]",
+    "[G28:0.000,-10.225,0.000]"
+  ],
   probeResult: [
     "[PRB:0.000,0.000,1.492:1]"
   ],
-  echo: [ "[echo:]" ],
+  echo: [ "[echo:G1X0.540Y10.4F100]" ],
   startupLine: [ ">G54G20:ok" ]
 }

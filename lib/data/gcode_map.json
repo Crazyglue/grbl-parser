@@ -42,5 +42,12 @@
       "name": "Coolant",
       "description": "Coolant stopped"
     }
+  },
+  "tool": {
+    "TLO": {
+      "code": "TLO",
+      "name": "Tool length offset",
+      "description": "The distance the tool is offset from the current WCS"
+    }
   }
 }

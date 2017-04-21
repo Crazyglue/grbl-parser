@@ -218,4 +218,127 @@ describe('Extractor', function() {
 
     })
   })
+
+  // [G28:0.000,0.000,0.000]
+  describe('#gcodeSystemReport()', function() {
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.gcodeSystem[0] // [G54:0.000,0.000,306.351]
+      var mockedReport = {
+        type: "gcodeSystem",
+        data: {
+          code: "G54",
+          name: "WCS",
+          description: "Default Work Coordinate System",
+          coordinates: {
+            x: 0,
+            y: 0,
+            z: 306.351
+          }
+        },
+        input: string
+      }
+
+      var report = extractor.gcodeSystemReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.gcodeSystem[1] // [TLO:0.000]
+      var mockedReport = {
+        type: "gcodeSystem",
+        data: {
+          code: "TLO",
+          name: "Tool length offset",
+          description: "The distance the tool is offset from the current WCS",
+          coordinates: {
+            z: 120
+          }
+        },
+        input: string
+      }
+
+      var report = extractor.gcodeSystemReport(string)
+      expect(report).to.deep.equal(mockedReport)
+
+    })
+  })
+
+  describe('#echoReport()', function() {
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.echo[0] // [echo:G1X0.540Y10.4F100]
+      var mockedReport = {
+        type: "echoMessage",
+        data: {
+          message: "G1X0.540Y10.4F100"
+        },
+        input: string
+      }
+
+      var report = extractor.echoReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+  })
+
+  describe('#startupLineReport()', function() {
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.startupLine[0] // >G54G20:ok
+      var mockedReport = {
+        type: "gcodeStartup",
+        data: {
+          line: "G54G20",
+          success: true
+        },
+        input: string
+      }
+
+      var report = extractor.startupLineReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+  })
+
+  describe('#successReport()', function() {
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.success[0] // ok
+      var mockedReport = {
+        type: "success",
+        data: {
+          success: true
+        },
+        input: string
+      }
+
+      var report = extractor.successReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+  })
+
+  describe('#feedbackMessageReport()', function() {
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.feedbackMessage[0] // [MSG:‘$H’|’$X’ to unlock]
+      var mockedReport = {
+        type: "feedbackMessage",
+        data: {
+          message: "‘$H’|’$X’ to unlock"
+        },
+        input: string
+      }
+
+      var report = extractor.feedbackMessageReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.feedbackMessage[3] // [Reset to continue]
+      var mockedReport = {
+        type: "feedbackMessage",
+        data: {
+          message: "Reset to continue"
+        },
+        input: string
+      }
+
+      var report = extractor.feedbackMessageReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+  })
 })
