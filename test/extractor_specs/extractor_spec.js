@@ -109,8 +109,8 @@ describe('Extractor', function() {
       var mockedReport = {
         type: "setting",
         data: {
-          code: "10",
-          value: "255.5",
+          code: 10,
+          value: 255.5,
           setting: "Status report options",
           units: "mask",
           description: "Alters data included in status reports."
@@ -124,17 +124,33 @@ describe('Extractor', function() {
       var mockedReportB = {
         type: "setting",
         data: {
-          code: "6",
-          value: "1",
-          setting: "Invert probe pin",
-          units: "boolean",
-          description: "Inverts the probe input pin signal."
+          code: 23,
+          value: 0,
+          setting: "Homing direction invert",
+          units: "mask",
+          description: "Homing searches for a switch in the positive direction. Set axis bit (00000ZYX) to search in negative direction."
         },
         input: validStrings.validSettingB
       }
 
       var reportB = extractor.settingsReport(validStrings.validSettingB)
       expect(reportB).to.deep.equal(mockedReportB)
+
+      var mockedReportC = {
+        type: "setting",
+        data: {
+          code: 6,
+          value: 1,
+          setting: "Invert probe pin",
+          units: "boolean",
+          description: "Inverts the probe input pin signal."
+        },
+        input: validStrings.validSettingC
+      }
+
+      var reportC = extractor.settingsReport(validStrings.validSettingC)
+      expect(reportC).to.deep.equal(mockedReportC)
+
 
     })
   })

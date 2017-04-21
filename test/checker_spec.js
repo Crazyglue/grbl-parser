@@ -14,7 +14,7 @@ describe('Checkers', function() {
     describe('for valid status report strings', function() {
       _.map(validStatuses, function(value) {
         it('should return true for ' + value, function() {
-          expect(check.isStatusReport(constants.validStrings.validStatus)).to.be.true
+          expect(check.isStatusReport(value)).to.be.true
         })
       })
 
@@ -27,7 +27,7 @@ describe('Checkers', function() {
             expect(check.isStatusReport(value)).to.be.false
           })
         }
-      });
+      })
     })
   })
 
@@ -49,7 +49,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isGrblInitialization(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -71,7 +71,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isAlarm(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -93,7 +93,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isError(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -102,21 +102,24 @@ describe('Checkers', function() {
       check = new Checker()
     })
 
+    validSettings = [ constants.validStrings.validSetting, constants.validStrings.validSettingB, constants.validStrings.validSettingC ]
+
     describe('for valid grbl setting strings', function(){
-      it('should return true for ' + constants.validStrings.validSetting, function() {
-        expect(check.isGrblSetting(constants.validStrings.validSetting)).to.be.true
-        expect(check.isGrblSetting(constants.validStrings.validSettingB)).to.be.true
+      _.map(validSettings, function(value, key){
+        it('should return true for ' + value, function() {
+          expect(check.isGrblSetting(value)).to.be.true
+        })
       })
     })
 
     describe("for non-startup strings", function() {
       strings = constants.validStrings
       _.map(strings, function(value, key) {
-        if (value !== strings.validSetting && value !== strings.validSettingB)
+        if (validSettings.indexOf(value) < 0)
           it('should return false for ' + value, function() {
             expect(check.isGrblSetting(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -138,7 +141,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isFeedbackMessage(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -160,7 +163,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isBuildVersion(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -178,7 +181,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isBuildOptions(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -200,7 +203,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isGcodeState(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -222,7 +225,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isHelpMessage(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -244,7 +247,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isGcodeSystem(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -266,7 +269,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isProbeResult(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -288,7 +291,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isEcho(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -310,7 +313,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isStartupLine(value)).to.be.false
           })
-      });
+      })
     })
   })
 
@@ -332,7 +335,7 @@ describe('Checkers', function() {
           it('should return false for ' + value, function() {
             expect(check.isSuccessResponse(value)).to.be.false
           })
-      });
+      })
     })
   })
 
