@@ -139,7 +139,7 @@ describe('StatusExtractor', function() {
 
     it('should return a correctly formatted report object given valid strings', function() {
 
-      var string = "<Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010>"
+      var string = validStrings.status[4] // "<Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010>"
       var mockedReportE = {
         data: {
           status: {
