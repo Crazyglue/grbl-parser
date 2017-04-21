@@ -3,342 +3,110 @@ var expect = require('chai').expect
 var constants = require('./spec_constants')
 var _ = require('lodash')
 
+var generateTests = function(func, messageType) {
+  generateTrueTest(func, messageType)
+  generateFalseTest(func, messageType)
+}
+
+var generateFalseTest = function(func, avoidMessageType) {
+  describe("for invalid strings", function() {
+    _.map(constants.validStrings, function(value, key) {
+      if (key != avoidMessageType) {
+        _.map(constants.validStrings[key], function(value, key) {
+          it('should return false for ' + value, function() {
+            expect(func(value)).to.be.false
+          })
+        })
+      }
+    })
+  })
+}
+
+var generateTrueTest = function(func, messageType) {
+  describe('for valid strings', function() {
+    _.map(constants.validStrings[messageType], function(value) {
+      it('should return true for ' + value, function() {
+        expect(func(value)).to.be.true
+      })
+    })
+  })
+}
+
 describe('Checkers', function() {
   describe('#isStatusReport()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    const validStatuses = [ constants.validStrings.validStatus, constants.validStrings.validStatusB, constants.validStrings.validStatusC, constants.validStrings.validStatusD, constants.validStrings.validStatusE, constants.validStrings.validStatusF ]
-
-    describe('for valid status report strings', function() {
-      _.map(validStatuses, function(value) {
-        it('should return true for ' + value, function() {
-          expect(check.isStatusReport(value)).to.be.true
-        })
-      })
-
-    })
-
-    describe("for non-startup strings", function() {
-      _.map(constants.validStrings, function(value, key) {
-        if (validStatuses.indexOf(value) < 0) {
-          it('should return false for ' + value, function() {
-            expect(check.isStatusReport(value)).to.be.false
-          })
-        }
-      })
-    })
+    check = new Checker()
+    generateTests(check.isStatusReport.bind(this), "status")
   })
 
   describe('#isGrblInitialization()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid grbl init strings', function(){
-      it('should return true for ' + constants.validStrings.validInitialization, function() {
-        expect(check.isGrblInitialization(constants.validStrings.validInitialization)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validInitialization && value !== strings.validInitializationB)
-          it('should return false for ' + value, function() {
-            expect(check.isGrblInitialization(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isGrblInitialization.bind(this), "init")
   })
 
   describe('#isAlarm()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid alarm strings', function(){
-      it('should return true for ' + constants.validStrings.validAlarm, function() {
-        expect(check.isAlarm(constants.validStrings.validAlarm)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validAlarm)
-          it('should return false for ' + value, function() {
-            expect(check.isAlarm(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isAlarm.bind(this), "alarm")
   })
 
   describe('#isError()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid error strings', function(){
-      it('should return true for ' + constants.validStrings.validError, function() {
-        expect(check.isError(constants.validStrings.validError)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validError)
-          it('should return false for ' + value, function() {
-            expect(check.isError(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isError.bind(this), "error")
   })
 
   describe('#isGrblSetting()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    validSettings = [ constants.validStrings.validSetting, constants.validStrings.validSettingB, constants.validStrings.validSettingC ]
-
-    describe('for valid grbl setting strings', function(){
-      _.map(validSettings, function(value, key){
-        it('should return true for ' + value, function() {
-          expect(check.isGrblSetting(value)).to.be.true
-        })
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (validSettings.indexOf(value) < 0)
-          it('should return false for ' + value, function() {
-            expect(check.isGrblSetting(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isGrblSetting.bind(this), "setting")
   })
 
   describe('#isFeedbackMessage()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid feedback strings', function(){
-      it('should return true for ' + constants.validStrings.validFeedbackMessage, function() {
-        expect(check.isFeedbackMessage(constants.validStrings.validFeedbackMessage)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validFeedbackMessage)
-          it('should return false for ' + value, function() {
-            expect(check.isFeedbackMessage(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isFeedbackMessage.bind(this), "feedbackMessage")
   })
 
   describe('#isBuildVersion()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid build version strings', function(){
-      it('should return true for ' + constants.validStrings.validBuildVersion, function() {
-        expect(check.isBuildVersion(constants.validStrings.validBuildVersion)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validBuildVersion && value !== strings.validBuildVersionB)
-          it('should return false for ' + value, function() {
-            expect(check.isBuildVersion(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isBuildVersion.bind(this), "buildVersion")
   })
 
   describe('#isBuildOptions()', function() {
-    describe('for valid build option strings', function(){
-      it('should return true for ' + constants.validStrings.validBuildOptions, function() {
-        expect(check.isBuildOptions(constants.validStrings.validBuildOptions)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validBuildOptions)
-          it('should return false for ' + value, function() {
-            expect(check.isBuildOptions(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isBuildOptions.bind(this), "buildOptions")
   })
 
   describe('#isGcodeState()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid gcode state strings', function(){
-      it('should return true for ' + constants.validStrings.validGcodeState, function() {
-        expect(check.isGcodeState(constants.validStrings.validGcodeState)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validGcodeState && value !== strings.validGcodeStateB)
-          it('should return false for ' + value, function() {
-            expect(check.isGcodeState(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isGcodeState.bind(this), "gcodeState")
   })
 
   describe('#isHelpMessage()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid help strings', function(){
-      it('should return true for ' + constants.validStrings.validHelpMessage, function() {
-        expect(check.isHelpMessage(constants.validStrings.validHelpMessage)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validHelpMessage)
-          it('should return false for ' + value, function() {
-            expect(check.isHelpMessage(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isHelpMessage.bind(this), "helpMessage")
   })
 
   describe('#isGcodeSystem()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid gcode system strings', function(){
-      it('should return true for ' + constants.validStrings.validGcodeSystem, function() {
-        expect(check.isGcodeSystem(constants.validStrings.validGcodeSystem)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validGcodeSystem)
-          it('should return false for ' + value, function() {
-            expect(check.isGcodeSystem(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isGcodeSystem.bind(this), "gcodeSystem")
   })
 
   describe('#isProbeResult()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid probe strings', function(){
-      it('should return true for ' + constants.validStrings.validProbeResult, function() {
-        expect(check.isProbeResult(constants.validStrings.validProbeResult)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validProbeResult)
-          it('should return false for ' + value, function() {
-            expect(check.isProbeResult(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isProbeResult.bind(this), "probeResult")
   })
 
   describe('#isEcho()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid echo strings', function(){
-      it('should return true for ' + constants.validStrings.validEcho, function() {
-        expect(check.isEcho(constants.validStrings.validEcho)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validEcho)
-          it('should return false for ' + value, function() {
-            expect(check.isEcho(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isEcho.bind(this), "echo")
   })
 
   describe('#isStartupLine()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid startup strings', function(){
-      it('should return true for ' + constants.validStrings.validStartupLine, function() {
-        expect(check.isStartupLine(constants.validStrings.validStartupLine)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validStartupLine)
-          it('should return false for ' + value, function() {
-            expect(check.isStartupLine(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isStartupLine.bind(this), "startupLine")
   })
 
   describe('#isSuccessResponse()', function() {
-    beforeEach(function() {
-      check = new Checker()
-    })
-
-    describe('for valid success strings', function(){
-      it('should return true for ' + constants.validStrings.validSuccess, function() {
-        expect(check.isSuccessResponse(constants.validStrings.validSuccess)).to.be.true
-      })
-    })
-
-    describe("for non-startup strings", function() {
-      strings = constants.validStrings
-      _.map(strings, function(value, key) {
-        if (value !== strings.validSuccess)
-          it('should return false for ' + value, function() {
-            expect(check.isSuccessResponse(value)).to.be.false
-          })
-      })
-    })
+    check = new Checker()
+    generateTests(check.isSuccessResponse.bind(this), "success")
   })
-
 })
 
 
