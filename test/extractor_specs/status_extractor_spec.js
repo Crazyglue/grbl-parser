@@ -9,7 +9,8 @@ describe('StatusExtractor', function() {
 
   describe('#statusReport()', function() {
     it('should return a correctly formatted report object given valid strings', function() {
-      mockedReport = {
+      var string = validStrings.status[0]
+      var mockedReport = {
         data: {
           machinePosition: {
             x: 0,
@@ -46,12 +47,17 @@ describe('StatusExtractor', function() {
           }
         },
         type: 'status',
-        input: validStrings.validStatus
+        input: string
       }
 
-      var report = statusExtractor.statusReport(validStrings.validStatus)
+      var report = statusExtractor.statusReport(string)
       expect(report).to.deep.equal(mockedReport)
 
+    })
+
+    it('should return a correctly formatted report object given valid strings', function() {
+
+      var string = validStrings.status[1]
       var mockedReportB = {
         data: {
           status: {
@@ -68,12 +74,17 @@ describe('StatusExtractor', function() {
           }
         },
         type: 'status',
-        input: validStrings.validStatusB
+        input: string
       }
 
-      var reportB = statusExtractor.statusReport(validStrings.validStatusB)
+      var reportB = statusExtractor.statusReport(string)
       expect(reportB).to.deep.equal(mockedReportB)
 
+    })
+
+    it('should return a correctly formatted report object given valid strings', function() {
+
+      var string = validStrings.status[2]
       var mockedReportC = {
         data: {
           status: {
@@ -81,12 +92,17 @@ describe('StatusExtractor', function() {
           }
         },
         type: 'status',
-        input: validStrings.validStatusC
+        input: string
       }
 
-      var reportC = statusExtractor.statusReport(validStrings.validStatusC)
+      var reportC = statusExtractor.statusReport(string)
       expect(reportC).to.deep.equal(mockedReportC)
 
+    })
+
+    it('should return a correctly formatted report object given valid strings', function() {
+
+      var string = validStrings.status[3]
       var mockedReportD = {
         data: {
           status: {
@@ -113,12 +129,17 @@ describe('StatusExtractor', function() {
           }
         },
         type: 'status',
-        input: validStrings.validStatusD
+        input: string
       }
 
-      var reportD = statusExtractor.statusReport(validStrings.validStatusD)
+      var reportD = statusExtractor.statusReport(string)
       expect(reportD).to.deep.equal(mockedReportD)
 
+    })
+
+    it('should return a correctly formatted report object given valid strings', function() {
+
+      var string = "<Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010>"
       var mockedReportE = {
         data: {
           status: {
@@ -145,10 +166,10 @@ describe('StatusExtractor', function() {
           ]
         },
         type: 'status',
-        input: validStrings.validStatusE // Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010
+        input: string // Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010
       }
 
-      var reportE = statusExtractor.statusReport(validStrings.validStatusE)
+      var reportE = statusExtractor.statusReport(string)
       expect(reportE).to.deep.equal(mockedReportE)
 
     })

@@ -9,84 +9,88 @@ describe('Extractor', function() {
 
   describe('#errorReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.error[0]
       var mockedReport = {
         data: {
           code: "20",
           message: "Unsupported or invalid g-code command found in block."
         },
-        input: validStrings.validError,
+        input: string,
         type: "error"
       }
 
-      var report = extractor.errorReport(validStrings.validError)
-
+      var report = extractor.errorReport(string)
       expect(report).to.deep.equal(mockedReport)
     })
   })
 
   describe('#grblInitReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.init[0]
       var mockedReport = {
         data: {
           firmwareVersion: '1.1f'
         },
-        input: validStrings.validInitialization,
+        input: string,
         type: "initialize"
       }
 
-      var report = extractor.grblInitReport(validStrings.validInitialization)
-
+      var report = extractor.grblInitReport(string)
       expect(report).to.deep.equal(mockedReport)
     })
   })
 
   describe('#alarmReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.alarm[0]
       var mockedReport = {
         data: {
           code: 9,
           message: 'Homing fail. Could not find limit switch within search distance.'
         },
-        input: validStrings.validAlarm,
+        input: string,
         type: "alarm"
       }
 
-      var report = extractor.alarmReport(validStrings.validAlarm)
-
+      var report = extractor.alarmReport(string)
       expect(report).to.deep.equal(mockedReport)
     })
   })
 
   describe('#buildVersionReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.buildVersion[0]
       var mockedReport = {
         data: {
           firmwareVersion: '1.1f.20170131'
         },
-        input: validStrings.validBuildVersion,
+        input: string,
         type: "buildVersion"
-
       }
 
-      var report = extractor.buildVersionReport(validStrings.validBuildVersion)
+      var report = extractor.buildVersionReport(string)
       expect(report).to.deep.equal(mockedReport)
+    })
 
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.buildVersion[1]
       var mockedReportB = {
         data: {
           firmwareVersion: '1.1e.20170131',
           buildString: "My OEM string"
         },
-        input: validStrings.validBuildVersionB,
+        input: string,
         type: "buildVersion"
       }
 
-      var report = extractor.buildVersionReport(validStrings.validBuildVersionB)
+      var report = extractor.buildVersionReport(string)
       expect(report).to.deep.equal(mockedReportB)
     })
   })
 
   describe('#buildOptionsReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.buildOptions[0]
       var mockedReport = {
         data: {
           options: [
@@ -94,11 +98,11 @@ describe('Extractor', function() {
           ],
           extras: [ '15', '128' ]
         },
-        input: validStrings.validBuildOptions,
+        input: string,
         type: "buildOptions"
       }
 
-      var report = extractor.buildOptionsReport(validStrings.validBuildOptions)
+      var report = extractor.buildOptionsReport(string)
 
       expect(report).to.deep.equal(mockedReport)
     })
@@ -106,6 +110,7 @@ describe('Extractor', function() {
 
   describe('#settingsReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.setting[0]
       var mockedReport = {
         type: "setting",
         data: {
@@ -115,12 +120,15 @@ describe('Extractor', function() {
           units: "mask",
           description: "Alters data included in status reports."
         },
-        input: validStrings.validSetting
+        input: string
       }
 
-      var report = extractor.settingsReport(validStrings.validSetting)
+      var report = extractor.settingsReport(string)
       expect(report).to.deep.equal(mockedReport)
+    })
 
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.setting[1]
       var mockedReportB = {
         type: "setting",
         data: {
@@ -130,12 +138,15 @@ describe('Extractor', function() {
           units: "mask",
           description: "Homing searches for a switch in the positive direction. Set axis bit (00000ZYX) to search in negative direction."
         },
-        input: validStrings.validSettingB
+        input: string
       }
 
-      var reportB = extractor.settingsReport(validStrings.validSettingB)
+      var reportB = extractor.settingsReport(string)
       expect(reportB).to.deep.equal(mockedReportB)
+     })
 
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.setting[2]
       var mockedReportC = {
         type: "setting",
         data: {
@@ -145,10 +156,10 @@ describe('Extractor', function() {
           units: "boolean",
           description: "Inverts the probe input pin signal."
         },
-        input: validStrings.validSettingC
+        input: string
       }
 
-      var reportC = extractor.settingsReport(validStrings.validSettingC)
+      var reportC = extractor.settingsReport(string)
       expect(reportC).to.deep.equal(mockedReportC)
 
 
@@ -158,6 +169,7 @@ describe('Extractor', function() {
   // [GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]
   describe('#gcodeStateReport()', function() {
     it('should return a correctly formatted report object', function() {
+      var string = validStrings.gcodeState[0]
       var mockedReport = {
         type: "gcodeState",
         data: {
@@ -175,10 +187,10 @@ describe('Extractor', function() {
             { code: "S0", name: "RPM", description: "The current spindle speed command" },
           ]
         },
-        input: validStrings.validGcodeState
+        input: string
       }
 
-      var report = extractor.gcodeStateReport(validStrings.validGcodeState)
+      var report = extractor.gcodeStateReport(string)
       expect(report).to.deep.equal(mockedReport)
 
     })
