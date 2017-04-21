@@ -128,6 +128,14 @@ parser.parseData("error:20")
 
 ### TODO
 
-- Support Grbl 0.9 messages
-- Support Grbl 1.0 messages
-- Finish extractor methods
+- Legacy grbl message parsing
+  - [x] status
+  - [x] settings
+  - [ ] build options
+  - [ ] build version
+  - [ ] alarm
+  - [ ] error
+  - [ ] init
+  - [ ] state
+- Improve test framework
+  - [ ] use generated test data (instead of hardcoded strings)
