@@ -9,14 +9,14 @@ module.exports.validStrings = {
   ],
   init: [
     "Grbl 1.1f ['$' for help]",
-    "Grbl 0.9j ['$' for help]"
+    "Grbl 0.9j ['$' for help]"  // grbl 09
   ],
 
   alarm: [
     "ALARM:9",
     "ALARM:1",
-    "ALARM:Hard/soft limit",
-    "ALARM:Abort during cycle"
+    "ALARM:Hard/soft limit",  // grbl 09
+    "ALARM:Abort during cycle"  // grbl 09
   ],
   error: [ "error:20" ],
   setting: [
@@ -48,7 +48,6 @@ module.exports.validStrings = {
   success: [ "ok" ],
   gcodeSystem: [ "[G28:]" ],
   probeResult: [
-    "[PRB:]",
     "[PRB:0.000,0.000,1.492:1]"
   ],
   echo: [ "[echo:]" ],

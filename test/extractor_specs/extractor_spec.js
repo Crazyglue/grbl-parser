@@ -195,4 +195,27 @@ describe('Extractor', function() {
 
     })
   })
+
+  // [PRB:0.000,0.000,1.492:1]
+  describe('#probeResultReport()', function() {
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.probeResult[0]
+      var mockedReport = {
+        type: "probeResult",
+        data: {
+          location: {
+            x: 0,
+            y: 0,
+            z: 1.492
+          },
+          success: true
+        },
+        input: string
+      }
+
+      var report = extractor.probeResultReport(string)
+      expect(report).to.deep.equal(mockedReport)
+
+    })
+  })
 })
