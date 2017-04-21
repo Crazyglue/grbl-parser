@@ -12,14 +12,27 @@ module.exports.validStrings = {
     "Grbl 0.9j ['$' for help]"
   ],
 
-  alarm: [ "ALARM:9" ],
+  alarm: [
+    "ALARM:9",
+    "ALARM:1",
+    "ALARM:Hard/soft limit",
+    "ALARM:Abort during cycle"
+  ],
   error: [ "error:20" ],
   setting: [
     "$10=255.5",
     "$23=0 (homing dir invert mask:00000000)", // grbl 09
     "$6=1",
   ],
-  feedbackMessage: [ "[MSG:‘$H’|’$X’ to unlock]" ],
+  feedbackMessage: [
+    "[MSG:‘$H’|’$X’ to unlock]",
+    "[MSG:Reset to continue]",
+    "[MSG:Enabled]",
+    "[Reset to continue]",  // grbl 09
+    "[Enabled]", // grbl 09
+    "['$H'|'$X' to unlock]",  // grbl 09
+    "[Caution: Unlocked]"  // grbl 09
+  ],
   gcodeState: [
     "[GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]",
     "[GC:G0 G58 G17 G20 G91 G94 M5 M7 M9 T4 F100 S12000]"
@@ -34,7 +47,10 @@ module.exports.validStrings = {
   buildOptions: [ "[OPT:V,15,128]" ],
   success: [ "ok" ],
   gcodeSystem: [ "[G28:]" ],
-  probeResult: [ "[PRB:]" ],
+  probeResult: [
+    "[PRB:]",
+    "[PRB:0.000,0.000,1.492:1]"
+  ],
   echo: [ "[echo:]" ],
   startupLine: [ ">G54G20:ok" ]
 }

@@ -50,11 +50,11 @@ Use these to bind to specific message types
 "unknown"
 ```
 
-You can programatically view/print all the message types:
+You can get all message types:
 
 ```javascript
 console.log(new GrblParser().messageTypes)
-// { status: "status", alarm: "alarm", ... }
+// [ status: "status", alarm: "alarm", ... ]
 ```
 
 ### Examples
@@ -131,11 +131,25 @@ parser.parseData("error:20")
 - Legacy grbl message parsing
   - [x] status
   - [x] settings
+  - [x] feedback messages
+  - [x] success
   - [ ] build options
   - [ ] build version
   - [ ] alarm
   - [ ] error
   - [ ] init
-  - [ ] state
+  - [ ] gcode state
+  - [ ] help messages
+  - [ ] gcode system
+  - [ ] probe result
+  - [ ] echo
+  - [ ] startup line
+- Finish building extractor methods
+  - [ ] help message
+  - [ ] gcode system
+  - [ ] probe result
+  - [ ] echo
+  - [ ] startup
 - Improve test framework
-  - [ ] use generated test data (instead of hardcoded strings)
+  - [ ] make extractor tests more dynamic
+  - [ ] use generated test data?
