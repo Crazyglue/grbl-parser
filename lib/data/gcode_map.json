@@ -20,6 +20,11 @@
       "name": "Units",
       "description": "Current units"
     },
+    "G28": {
+      "code": "G28",
+      "name": "Predefined Position",
+      "description": "Go to Predefined Position"
+    },
     "G90": {
       "code": "G90",
       "name": "Distance Mode",
