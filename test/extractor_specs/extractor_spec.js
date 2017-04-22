@@ -90,7 +90,8 @@ describe('Extractor', function() {
       var string = validStrings.buildVersion[0]
       var mockedReport = {
         data: {
-          firmwareVersion: '1.1f.20170131'
+          firmwareVersion: '1.1f',
+          buildDate: "20170131"
         },
         input: string,
         type: "buildVersion"
@@ -104,8 +105,25 @@ describe('Extractor', function() {
       var string = validStrings.buildVersion[1]
       var mockedReportB = {
         data: {
-          firmwareVersion: '1.1e.20170131',
+          firmwareVersion: '1.1e',
+          buildDate: "20170131",
           buildString: "My OEM string"
+        },
+        input: string,
+        type: "buildVersion"
+      }
+
+      var report = extractor.buildVersionReport(string)
+      expect(report).to.deep.equal(mockedReportB)
+    })
+
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.buildVersion[2] // [0.9j.20160316:Another OEM string!!]
+      var mockedReportB = {
+        data: {
+          firmwareVersion: '0.9j',
+          buildDate: "20160316",
+          buildString: "Another OEM string!!"
         },
         input: string,
         type: "buildVersion"

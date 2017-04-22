@@ -46,7 +46,7 @@ module.exports.validStrings = {
   buildVersion: [
     "[VER:1.1f.20170131:]",
     "[VER:1.1e.20170131:My OEM string]",
-    "[0.9j.20160316:]",
+    "[0.9j.20160316:Another OEM string!!]",
     "[1.0c.20161011:]"
   ],
   buildOptions: [ "[OPT:V,15,128]" ],
