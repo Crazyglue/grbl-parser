@@ -69,6 +69,20 @@ describe('Extractor', function() {
       var report = extractor.alarmReport(string)
       expect(report).to.deep.equal(mockedReport)
     })
+
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.alarm[2] //ALARM:Hard/soft limit
+      var mockedReport = {
+        data: {
+          message: 'Hard/soft limit'
+        },
+        input: string,
+        type: "alarm"
+      }
+
+      var report = extractor.alarmReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
   })
 
   describe('#buildVersionReport()', function() {
