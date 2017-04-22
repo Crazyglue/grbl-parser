@@ -12,8 +12,22 @@ describe('Extractor', function() {
       var string = validStrings.error[0]
       var mockedReport = {
         data: {
-          code: "20",
+          code: 20,
           message: "Unsupported or invalid g-code command found in block."
+        },
+        input: string,
+        type: "error"
+      }
+
+      var report = extractor.errorReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
+
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.error[1]
+      var mockedReport = {
+        data: {
+          message: "Bad number format"
         },
         input: string,
         type: "error"

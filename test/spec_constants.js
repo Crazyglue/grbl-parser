@@ -18,7 +18,12 @@ module.exports.validStrings = {
     "ALARM:Hard/soft limit",  // grbl 09
     "ALARM:Abort during cycle"  // grbl 09
   ],
-  error: [ "error:20" ],
+  error: [
+    "error:20",
+    "error:Bad number format",
+    "error:Value < 0",
+    "error:Invalid gcode ID:24"
+  ],
   setting: [
     "$10=255.5",
     "$23=0 (homing dir invert mask:00000000)", // grbl 09
