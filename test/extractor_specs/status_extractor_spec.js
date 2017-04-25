@@ -68,7 +68,7 @@ describe('StatusExtractor', function() {
     it('should return a correctly formatted report object given valid strings', function() {
 
       var string = validStrings.status[1]
-      var mockedReportB = {
+      var mockedReport = {
         data: {
           status: {
             state: "Idle"
@@ -92,15 +92,15 @@ describe('StatusExtractor', function() {
         input: string
       }
 
-      var reportB = statusExtractor.statusReport(string)
-      expect(reportB).to.deep.equal(mockedReportB)
+      var report = statusExtractor.statusReport(string)
+      expect(report).to.deep.equal(mockedReport)
 
     })
 
     it('should return a correctly formatted report object given valid strings', function() {
 
       var string = validStrings.status[2]
-      var mockedReportC = {
+      var mockedReport = {
         data: {
           status: {
             state: "Idle"
@@ -110,15 +110,15 @@ describe('StatusExtractor', function() {
         input: string
       }
 
-      var reportC = statusExtractor.statusReport(string)
-      expect(reportC).to.deep.equal(mockedReportC)
+      var report = statusExtractor.statusReport(string)
+      expect(report).to.deep.equal(mockedReport)
 
     })
 
     it('should return a correctly formatted report object given valid strings', function() {
 
       var string = validStrings.status[3]
-      var mockedReportD = {
+      var mockedReport = {
         data: {
           status: {
             state: "Run",
@@ -147,15 +147,15 @@ describe('StatusExtractor', function() {
         input: string
       }
 
-      var reportD = statusExtractor.statusReport(string)
-      expect(reportD).to.deep.equal(mockedReportD)
+      var report = statusExtractor.statusReport(string)
+      expect(report).to.deep.equal(mockedReport)
 
     })
 
     it('should return a correctly formatted report object given valid strings', function() {
 
       var string = validStrings.status[4] // "<Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010>"
-      var mockedReportE = {
+      var mockedReport = {
         data: {
           status: {
             state: "Idle"
@@ -184,8 +184,8 @@ describe('StatusExtractor', function() {
         input: string // Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010
       }
 
-      var reportE = statusExtractor.statusReport(string)
-      expect(reportE).to.deep.equal(mockedReportE)
+      var report = statusExtractor.statusReport(string)
+      expect(report).to.deep.equal(mockedReport)
 
     })
 
