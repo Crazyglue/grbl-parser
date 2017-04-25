@@ -9,7 +9,7 @@ describe('StatusExtractor', function() {
 
   describe('#statusReport()', function() {
     it('should return a correctly formatted report object given valid strings', function() {
-      var string = validStrings.status[0]
+      var string = validStrings.status[0] // <Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM|Pn:XYZPDHRS>
       var mockedReport = {
         data: {
           machinePosition: {
@@ -44,7 +44,17 @@ describe('StatusExtractor', function() {
             flood: true,
             mist: true,
             spindleDirection: 'clockwise'
-          }
+          },
+          pins:[
+            { pin: "limit-x", on: true },
+            { pin: "limit-y", on: true },
+            { pin: "limit-z", on: true },
+            { pin: "probe", on: true },
+            { pin: "door", on: true },
+            { pin: "hold", on: true },
+            { pin: "soft-reset", on: true },
+            { pin: "cycle-start", on: true },
+          ]
         },
         type: 'status',
         input: string
@@ -71,7 +81,12 @@ describe('StatusExtractor', function() {
           feedSpindle: {
             realtimeFeedrate: 0,
             realtimeSpindle: 0
-          }
+          },
+          pins: [
+            { pin: "limit-x", on: true },
+            { pin: "hold", on: true },
+            { pin: "cycle-start", on: true }
+          ]
         },
         type: 'status',
         input: string
@@ -171,6 +186,44 @@ describe('StatusExtractor', function() {
 
       var reportE = statusExtractor.statusReport(string)
       expect(reportE).to.deep.equal(mockedReportE)
+
+    })
+
+    it('should return a correctly formatted report object given valid strings', function() {
+
+      var string = validStrings.status[6] // <Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000,Pin:100|1|0100>
+      var mockedReport = {
+        data: {
+          status: {
+            state: "Idle"
+          },
+          machinePosition: {
+            x: 0,
+            y: 0,
+            z: 0
+          },
+          workPosition: {
+            x: 0,
+            y: 0,
+            z: 0
+          },
+          pins: [
+            { pin: "limit-x", on: true },
+            { pin: "limit-y", on: false },
+            { pin: "limit-z", on: false },
+            { pin: "probe", on: true },
+            { pin: "door", on: false },
+            { pin: "hold", on: true },
+            { pin: "soft-reset", on: false },
+            { pin: "cycle-start", on: false },
+          ]
+        },
+        type: 'status',
+        input: string
+      }
+
+      var report = statusExtractor.statusReport(string)
+      expect(report).to.deep.equal(mockedReport)
 
     })
   })
