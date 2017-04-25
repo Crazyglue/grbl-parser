@@ -1,30 +1,54 @@
-var Parser = require('../lib/parser')
-var Extractor = require('../lib/extractor')
 var expect = require('chai').expect
-var validStrings = require('./spec_constants').validStrings
-var sinon = require("sinon")
 var _ = require("lodash")
+var sinon = require("sinon")
+
+var Extractor = require('../lib/extractor')
+var Parser = require('../lib/parser')
+var validStrings = require('./spec_constants').validStrings
 
 describe('EventDispatcher', function() {
   describe('#addListener()', function() {
-    describe("adding listeners", function() {
-      it("calls the callbacks when dispatched", function() {
-        eventDispatcher = new EventDispatcher()
-        spy = sinon.spy()
-        spyB = sinon.spy()
-        spyC = sinon.spy()
-        spyD = sinon.spy()
+    it("calls the callbacks when a message is dispatched", function() {
+      var eventDispatcher = new EventDispatcher()
+      var spy = sinon.spy()
 
-        eventDispatcher.addListener("status", spy)
-        eventDispatcher.addListener("status", spyB)
-        eventDispatcher.addListener("status", spyC)
-        eventDispatcher.addListener("status", spyD)
-        eventDispatcher.dispatch("status")
-        expect(spy.called).to.be.true
-        expect(spyB.called).to.be.true
-        expect(spyC.called).to.be.true
-        expect(spyD.called).to.be.true
-      })
+      eventDispatcher.addListener("status", spy)
+      eventDispatcher.dispatch("status")
+      expect(spy.called).to.be.true
+    })
+  })
+
+  describe('#removeListener()', function() {
+    it("does not call the callbacks when a message is dispatched", function() {
+      var eventDispatcher = new EventDispatcher()
+      var spy = sinon.spy()
+
+      eventDispatcher.addListener("status", spy)
+      eventDispatcher.removeListener("status", spy)
+      eventDispatcher.dispatch("status")
+      expect(spy.called).to.be.false
+    })
+  })
+
+  describe('#addToAllListeners()', function() {
+    it("calls the callback when dispatching a single message type", function() {
+      var eventDispatcher = new EventDispatcher()
+      var spy = sinon.spy()
+
+      eventDispatcher.addToAllListeners(spy)
+      eventDispatcher.dispatch("status")
+      expect(spy.called).to.be.true
+    })
+
+    it("calls the callback when dispatching multiple message types", function() {
+      var eventDispatcher = new EventDispatcher()
+      var spy = sinon.spy()
+
+      eventDispatcher.addToAllListeners(spy)
+      eventDispatcher.dispatch("status")
+      eventDispatcher.dispatch("initialize")
+      eventDispatcher.dispatch("alarm")
+      expect(spy.calledThrice).to.be.true
     })
   })
 })
