@@ -12,7 +12,6 @@ module.exports.validStrings = {
     "Grbl 1.1f ['$' for help]",
     "Grbl 0.9j ['$' for help]"  // grbl 09
   ],
-
   alarm: [
     "ALARM:9",
     "ALARM:1",
@@ -62,5 +61,8 @@ module.exports.validStrings = {
     "[PRB:0.000,0.000,1.492:1]"
   ],
   echo: [ "[echo:G1X0.540Y10.4F100]" ],
-  startupLine: [ ">G54G20:ok" ]
+  startupLine: [
+    ">G54G20:ok",
+    "G28ok"     // grbl 10
+    ]
 }
