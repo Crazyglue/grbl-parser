@@ -64,5 +64,5 @@ module.exports.validStrings = {
   startupLine: [
     ">G54G20:ok",
     "G28ok"     // grbl 10
-    ]
+  ]
 }

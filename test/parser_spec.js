@@ -55,5 +55,29 @@ describe('Parser', function() {
     generateSuccessTest("probeResultReport", validStrings.probeResult, "extractor")
     generateSuccessTest("echoReport", validStrings.echo, "extractor")
     generateSuccessTest("startupLineReport", validStrings.startupLine, "extractor")
+
+    it("should dispatch unknown message type for non-grbl strings", function() {
+      parser = new Parser()
+      spyFunc = sinon.spy(parser, "dispatch")
+
+      parser.parseData("jkfldaskl")
+
+      expect(spyFunc.calledWith("unknown")).to.be.true
+      expect(spyFunc.calledWith("status")).to.be.false
+      expect(spyFunc.calledWith("initialize")).to.be.false
+      expect(spyFunc.calledWith("alarm")).to.be.false
+      expect(spyFunc.calledWith("error")).to.be.false
+      expect(spyFunc.calledWith("setting")).to.be.false
+      expect(spyFunc.calledWith("feedbackMessage")).to.be.false
+      expect(spyFunc.calledWith("buildVersion")).to.be.false
+      expect(spyFunc.calledWith("buildOptions")).to.be.false
+      expect(spyFunc.calledWith("gcodeState")).to.be.false
+      expect(spyFunc.calledWith("helpMessage")).to.be.false
+      expect(spyFunc.calledWith("gcodeSystem")).to.be.false
+      expect(spyFunc.calledWith("probeResult")).to.be.false
+      expect(spyFunc.calledWith("echoMessage")).to.be.false
+      expect(spyFunc.calledWith("gcodeStartup")).to.be.false
+      expect(spyFunc.calledWith("startupLine")).to.be.false
+    })
   })
 })
