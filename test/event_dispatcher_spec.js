@@ -14,7 +14,7 @@ describe('EventDispatcher', function() {
 
       eventDispatcher.addListener("status", spy)
       eventDispatcher.dispatch("status")
-      expect(spy.called).to.be.true
+      expect(spy.calledOnce).to.be.true
     })
   })
 
@@ -26,7 +26,17 @@ describe('EventDispatcher', function() {
       eventDispatcher.addListener("status", spy)
       eventDispatcher.removeListener("status", spy)
       eventDispatcher.dispatch("status")
-      expect(spy.called).to.be.false
+      expect(spy.calledOnce).to.be.false
+    })
+
+    it("does not call the removed callback when a message registered for all message types is dispatched", function() {
+      var eventDispatcher = new EventDispatcher()
+      var spy = sinon.spy()
+
+      eventDispatcher.addToAllListeners(spy)
+      eventDispatcher.removeListener("status", spy)
+      eventDispatcher.dispatch("status")
+      expect(spy.calledOnce).to.be.false
     })
   })
 
@@ -37,7 +47,7 @@ describe('EventDispatcher', function() {
 
       eventDispatcher.addToAllListeners(spy)
       eventDispatcher.dispatch("status")
-      expect(spy.called).to.be.true
+      expect(spy.calledOnce).to.be.true
     })
 
     it("calls the callback when dispatching multiple message types", function() {
