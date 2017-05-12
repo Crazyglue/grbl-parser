@@ -1,19 +1,20 @@
+# grbl-parser
+
 [![Coverage Status](https://coveralls.io/repos/github/Crazyglue/grbl-parser/badge.svg?branch=master)](https://coveralls.io/github/Crazyglue/grbl-parser?branch=master) [![Build Status](https://travis-ci.org/Crazyglue/grbl-parser.svg?branch=master)](https://travis-ci.org/Crazyglue/grbl-parser)
 
-# grbl-parser
 Javascript based grbl parser
 
 Provides an event-based system to parse any strings grbl may output.
 
-Grbl 1.1 support only (for now)
+Supports Grbl 0.9, 1.0, and 1.1 (untested with grbl 0.8)
 
-### Installation
+## Installation
 
 ```bash
 npm install grbl-parser --save
 ```
 
-### Usage
+## Usage
 
 ```javascript
 var GrblParser = require("grbl-parser")
@@ -57,9 +58,9 @@ console.log(new GrblParser().messageTypes)
 // [ status: "status", alarm: "alarm", ... ]
 ```
 
-### Examples
+## Examples
 
-#### Bind callback to message types
+### Bind callback to message types
 
 ```javascript
 parser.addListener("status", myStatusCallback)
@@ -67,7 +68,7 @@ parser.addListener("alarm", myAlarmCallback)
 parser.addToAllListeners(myEverythingCallback)
 ```
 
-#### Status message output
+### Status message output
 
 ```javascript
 parser.parseData("<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>")
@@ -125,31 +126,3 @@ parser.parseData("error:20")
   type: "error"
 }
 ```
-
-### TODO
-
-- Legacy grbl message parsing
-  - [x] status
-  - [x] settings
-  - [x] feedback messages
-  - [x] success
-  - [ ] build options
-  - [ ] build version
-  - [ ] alarm
-  - [ ] error
-  - [ ] init
-  - [ ] gcode state
-  - [ ] help messages
-  - [ ] gcode system
-  - [ ] probe result
-  - [ ] echo
-  - [ ] startup line
-- Finish building extractor methods
-  - [ ] help message
-  - [ ] gcode system
-  - [ ] probe result
-  - [ ] echo
-  - [ ] startup
-- Improve test framework
-  - [ ] make extractor tests more dynamic
-  - [ ] use generated test data?
