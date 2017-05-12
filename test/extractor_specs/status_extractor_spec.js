@@ -21,7 +21,7 @@ describe('StatusExtractor', function() {
             availableBlocks: 15,
             availableRXBytes: 128
           },
-          feedSpindle: {
+          realtimeFeed: {
             realtimeFeedrate: 675.5,
             realtimeSpindle: 24000
           },
@@ -78,7 +78,7 @@ describe('StatusExtractor', function() {
             y: 0,
             z: 0
           },
-          feedSpindle: {
+          realtimeFeed: {
             realtimeFeedrate: 0,
             realtimeSpindle: 0
           },
@@ -128,7 +128,7 @@ describe('StatusExtractor', function() {
             y: 0,
             z: 0
           },
-          feedSpindle: {
+          realtimeFeed: {
             realtimeFeedrate: 112,
             realtimeSpindle: 12000
           },
