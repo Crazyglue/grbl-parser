@@ -19,8 +19,8 @@ npm install grbl-parser --save
 ```javascript
 var GrblParser = require("grbl-parser")
 var parser = new GrblParser()
-var myCallback = function(message) {
-  // do stuff
+var myCallback = function(parsedData) {
+  // do stuff with parsed data (see example status output in Examples section)
 }
 var myString = "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 
@@ -109,7 +109,7 @@ parser.parseData("<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120
       spindleDirection: 'clockwise'
     }
   },
-  type: "grbl-status",
+  type: "status",
   input: "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 }
 ```
