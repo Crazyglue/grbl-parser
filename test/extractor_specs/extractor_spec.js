@@ -36,6 +36,20 @@ describe('Extractor', function() {
       var report = extractor.errorReport(string)
       expect(report).to.deep.equal(mockedReport)
     })
+
+    it('should return a correctly formatted report object', function() {
+      var string = validStrings.error[3]
+      var mockedReport = {
+        data: {
+          message: "Invalid gcode ID:24"
+        },
+        input: string,
+        type: "error"
+      }
+
+      var report = extractor.errorReport(string)
+      expect(report).to.deep.equal(mockedReport)
+    })
   })
 
   describe('#grblInitReport()', function() {
