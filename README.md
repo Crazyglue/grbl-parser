@@ -2,9 +2,9 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/Crazyglue/grbl-parser/badge.svg?branch=master)](https://coveralls.io/github/Crazyglue/grbl-parser?branch=master) [![Build Status](https://travis-ci.org/Crazyglue/grbl-parser.svg?branch=master)](https://travis-ci.org/Crazyglue/grbl-parser)
 
-Javascript based grbl parser
+Grbl machine parser library written in javascript
 
-Provides an event-based system to parse any strings grbl may output.
+Provides an event-based callbacks to parse any strings grbl may output.
 
 Supports Grbl 0.9, 1.0, and 1.1 (untested with grbl 0.8)
 
@@ -126,3 +126,8 @@ parser.parseData("error:20")
   type: "error"
 }
 ```
+
+## Other links
+
+- [grbl](https://github.com/gnea/grbl)
+- [node-serialport](https://github.com/EmergingTechnologyAdvisors/node-serialport)
