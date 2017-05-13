@@ -6,7 +6,8 @@ module.exports.validStrings = {
     "<Run|MPos:0.000,0.000,0.000|FS:112,12000|Ov:120,110,100|A:C>",
     "<Idle,MPos:50.300,-120.000,0.000,WPos:-10.300,5.230,0.000,Buf:12,RX:101,Lim:010>", // grbl 09
     "<Hold,MPos:50.300,-120.000,0.000>", // grbl 09
-    "<Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000,Pin:100|1|0100>" // grbl 10
+    "<Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000,Pin:100|1|0100>", // grbl 10
+    "<Idle,MPos:100.000,100.000,100.000,WPos:0.000,0.000,0.000,Pin:|1|>" // grbl 10
   ],
   init: [
     "Grbl 1.1f ['$' for help]",
@@ -41,7 +42,8 @@ module.exports.validStrings = {
   gcodeState: [
     "[GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]",
     "[GC:G0 G58 G17 G20 G91 G94 M5 M7 M9 T4 F100 S12000]",
-    "[G0 G54 G17 G21 G90 G94 M0 M5 M9 T0 F0. S0.]"        // grbl 10
+    "[G0 G54 G17 G21 G90 G94 M0 M5 M9 T0 F60 S12000]",        // grbl 10
+    "[G0 G54 G17 G21 G90 G94 M0 M5 M9 P2 T0 F0 S0]"
   ],
   helpMessage: [ "[HLP:$$ $# $G $I $N $x=val $Nx=line $J=line $SLP $C $X $H ~ ! ? ctrl-x]" ],
   buildVersion: [
@@ -58,7 +60,8 @@ module.exports.validStrings = {
     "[G28:0.000,-10.225,0.000]"
   ],
   probeResult: [
-    "[PRB:0.000,0.000,1.492:1]"
+    "[PRB:0.000,0.000,1.492:1]",
+    "[PRB:53.223,0.000,-100.203:0]"
   ],
   echo: [ "[echo:G1X0.540Y10.4F100]" ],
   startupLine: [

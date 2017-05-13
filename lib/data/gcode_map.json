@@ -37,6 +37,11 @@
     }
   },
   "mcode": {
+    "M0": {
+      "code": "M0",
+      "name": "Suspended",
+      "description": "Machine is currently suspended"
+    },
     "M5": {
       "code": "M5",
       "name": "Spindle",

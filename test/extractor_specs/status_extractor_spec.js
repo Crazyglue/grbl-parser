@@ -226,5 +226,36 @@ describe('StatusExtractor', function() {
       expect(report).to.deep.equal(mockedReport)
 
     })
+
+    it('should return a correctly formatted report object given valid strings', function() {
+
+      var string = validStrings.status[7] // <Idle,MPos:100.000,100.000,100.000,WPos:0.000,0.000,0.000,Pin:|1|>
+      var mockedReport = {
+        data: {
+          status: {
+            state: "Idle"
+          },
+          machinePosition: {
+            x: 100,
+            y: 100,
+            z: 100
+          },
+          workPosition: {
+            x: 0,
+            y: 0,
+            z: 0
+          },
+          pins: [
+            { pin: "probe", on: true },
+          ]
+        },
+        type: 'status',
+        input: string
+      }
+
+      var report = statusExtractor.statusReport(string)
+      expect(report).to.deep.equal(mockedReport)
+
+    })
   })
 })
