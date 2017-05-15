@@ -58,7 +58,7 @@ describe('Parser', function() {
 
     it("should dispatch unknown message type for non-grbl strings", function() {
       parser = new Parser()
-      spyFunc = sinon.spy(parser, "dispatch")
+      spyFunc = sinon.spy(parser.dispatcher, "dispatch")
 
       parser.parseData("jkfldaskl")
 
