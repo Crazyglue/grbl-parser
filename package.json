@@ -1,6 +1,6 @@
 {
   "name": "grbl-parser",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Javascript-based gcode parser for grbl",
   "main": "./lib/parser",
   "scripts": {
