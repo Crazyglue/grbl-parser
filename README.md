@@ -24,7 +24,7 @@ var myCallback = function(parsedData) {
 }
 var myString = "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 
-parser.addListener("status", myCallback) // bind myCallback to grbl status reports
+parser.dispatcher.addListener("status", myCallback) // bind myCallback to grbl status reports
 parser.parseData(myString)
 ```
 
@@ -63,9 +63,9 @@ console.log(new GrblParser().messageTypes)
 ### Bind callback to message types
 
 ```javascript
-parser.addListener("status", myStatusCallback)
-parser.addListener("alarm", myAlarmCallback)
-parser.addToAllListeners(myEverythingCallback)
+parser.dispatcher.addListener("status", myStatusCallback)
+parser.dispatcher.addListener("alarm", myAlarmCallback)
+parser.dispatcher.addToAllListeners(myEverythingCallback)
 ```
 
 ### Status message output
