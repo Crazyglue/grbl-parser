@@ -3,11 +3,12 @@
   "version": "0.1.5",
   "type": "module",
   "description": "Javascript-based gcode parser for grbl",
-  "main": "./dist/lib/parser.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "node ./node_modules/typescript/bin/tsc -p .",
     "test": "node ./node_modules/typescript/bin/tsc -p . && ./node_modules/mocha/bin/_mocha test/*",
-    "coverage": "node ./node_modules/typescript/bin/tsc -p . && node ./node_modules/c8/bin/c8.js ./node_modules/mocha/bin/_mocha test/*"
+    "coverage": "node ./node_modules/typescript/bin/tsc -p . && node ./node_modules/c8/bin/c8.js ./node_modules/mocha/bin/_mocha test/*",
+    "demo": "node ./node_modules/typescript/bin/tsc -p . && node demo.ts"
   },
   "author": "Eric Dobroveanu",
   "license": "ISC",

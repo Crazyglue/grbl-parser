@@ -1,5 +1,4 @@
-import { Parser } from '../dist/lib/parser.js'
-import { Extractor } from '../dist/lib/extractor.js'
+import { Parser, Extractor } from '../dist/index.js'
 import chai from 'chai'
 const expect = chai.expect
 import { validStrings } from './spec_constants.js'

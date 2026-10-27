@@ -3,7 +3,7 @@ const expect = chai.expect
 import _ from 'lodash'
 import sinon from 'sinon'
 
-import { EventDispatcher } from '../dist/lib/event_dispatcher.js'
+import { EventDispatcher } from '../dist/index.js'
 import { validStrings } from './spec_constants.js'
 
 describe('EventDispatcher', function() {

@@ -1,4 +1,4 @@
-import { Checker } from '../dist/lib/checker.js'
+import { Checker } from '../dist/index.js'
 import chai from 'chai'
 const expect = chai.expect
 import * as constants from './spec_constants.js'

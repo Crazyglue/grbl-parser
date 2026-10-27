@@ -1,8 +1,11 @@
-import { Parser } from "./lib/parser.js";
+// Demo — intentionally NOT part of the tsc build (it lives outside src/).
+// Run it after building with `npm run demo`: Node 24 type-strips this file
+// directly, and it loads the built barrel from dist/.
+import { Parser } from "./dist/index.js";
 
 const parser = new Parser();
 
-parser.dispatcher.addToAllListeners((data: any) => {
+parser.dispatcher.addToAllListeners((data) => {
   console.log("parsed:", data);
 });
 

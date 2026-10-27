@@ -1,4 +1,4 @@
-import { Extractor } from '../../dist/lib/extractor.js'
+import { Extractor } from '../../dist/index.js'
 import chai from 'chai'
 const expect = chai.expect
 import { validStrings } from '../spec_constants.js'
