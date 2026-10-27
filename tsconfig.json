@@ -4,7 +4,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "./src",
   },
   "include": ["src/**/*.ts"]
 }
