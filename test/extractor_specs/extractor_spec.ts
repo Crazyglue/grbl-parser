@@ -4,13 +4,13 @@ import { describe, it, expect, beforeEach } from 'vitest'
 
 let extractor: Extractor
 
-describe('Extractor', function() {
-  beforeEach(function() {
+describe('Extractor', () => {
+  beforeEach(() => {
     extractor = new Extractor()
   })
 
-  describe('#errorReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#errorReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.error[0]
       const mockedReport = {
         data: {
@@ -25,7 +25,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.error[1]
       const mockedReport = {
         data: {
@@ -39,7 +39,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.error[3]
       const mockedReport = {
         data: {
@@ -54,8 +54,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#grblInitReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#grblInitReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.init[0]
       const mockedReport = {
         data: {
@@ -70,8 +70,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#alarmReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#alarmReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.alarm[0]
       const mockedReport = {
         data: {
@@ -86,7 +86,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.alarm[2] //ALARM:Hard/soft limit
       const mockedReport = {
         data: {
@@ -101,8 +101,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#buildVersionReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#buildVersionReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.buildVersion[0]
       const mockedReport = {
         data: {
@@ -117,7 +117,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.buildVersion[1]
       const mockedReportB = {
         data: {
@@ -133,7 +133,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReportB)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.buildVersion[2] // [0.9j.20160316:Another OEM string!!]
       const mockedReportB = {
         data: {
@@ -150,8 +150,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#buildOptionsReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#buildOptionsReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.buildOptions[0]
       const mockedReport = {
         data: {
@@ -170,8 +170,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#settingsReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#settingsReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.setting[0]
       const mockedReport = {
         type: "setting",
@@ -189,7 +189,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.setting[1]
       const mockedReportB = {
         type: "setting",
@@ -207,7 +207,7 @@ describe('Extractor', function() {
       expect(reportB).to.deep.equal(mockedReportB)
      })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.setting[2]
       const mockedReportC = {
         type: "setting",
@@ -229,8 +229,8 @@ describe('Extractor', function() {
   })
 
   // [GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]
-  describe('#gcodeStateReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#gcodeStateReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.gcodeState[0]
       const mockedReport = {
         type: "gcodeState",
@@ -256,7 +256,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object for grbl 1.0', function() {
+    it('should return a correctly formatted report object for grbl 1.0', () => {
       const string = validStrings.gcodeState[2] //  [G0 G54 G17 G21 G90 G94 M0 M5 M9 T0 F60 S12000]
       const mockedReport = {
         type: "gcodeState",
@@ -283,7 +283,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object that has an unknown code', function() {
+    it('should return a correctly formatted report object that has an unknown code', () => {
       const string = validStrings.gcodeState[3] //  [G0 G54 G17 G21 G90 G94 M0 M5 M9 P2 T0 F0 S0]
       const mockedReport = {
         type: "gcodeState",
@@ -313,8 +313,8 @@ describe('Extractor', function() {
   })
 
   // [PRB:0.000,0.000,1.492:1]
-  describe('#probeResultReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#probeResultReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.probeResult[0]
       const mockedReport = {
         type: "probeResult",
@@ -333,7 +333,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.probeResult[1]  // "[PRB:53.223,0.000,-100.203:0]"
       const mockedReport = {
         type: "probeResult",
@@ -355,8 +355,8 @@ describe('Extractor', function() {
   })
 
   // [G28:0.000,0.000,0.000]
-  describe('#gcodeSystemReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#gcodeSystemReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.gcodeSystem[0] // [G54:0.000,0.000,306.351]
       const mockedReport = {
         type: "gcodeSystem",
@@ -377,7 +377,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.gcodeSystem[1] // [TLO:0.000]
       const mockedReport = {
         type: "gcodeSystem",
@@ -398,8 +398,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#echoReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#echoReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.echo[0] // [echo:G1X0.540Y10.4F100]
       const mockedReport = {
         type: "echoMessage",
@@ -414,8 +414,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#startupLineReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#startupLineReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.startupLine[0] // >G54G20:ok
       const mockedReport = {
         type: "gcodeStartup",
@@ -431,8 +431,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#successReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#successReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.success[0] // ok
       const mockedReport = {
         type: "success",
@@ -447,8 +447,8 @@ describe('Extractor', function() {
     })
   })
 
-  describe('#feedbackMessageReport()', function() {
-    it('should return a correctly formatted report object', function() {
+  describe('#feedbackMessageReport()', () => {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.feedbackMessage[0] // [MSG:‘$H’|’$X’ to unlock]
       const mockedReport = {
         type: "feedbackMessage",
@@ -462,7 +462,7 @@ describe('Extractor', function() {
       expect(report).to.deep.equal(mockedReport)
     })
 
-    it('should return a correctly formatted report object', function() {
+    it('should return a correctly formatted report object', () => {
       const string = validStrings.feedbackMessage[3] // [Reset to continue]
       const mockedReport = {
         type: "feedbackMessage",

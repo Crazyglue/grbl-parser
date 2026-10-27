@@ -13,22 +13,22 @@ var generateSuccessTest = function(
   strings: string[],
   makeSpy: (parser: Parser) => AnySpy
 ) {
-  describe('for ' + funcName + ' messages', function() {
-    beforeEach(function() {
+  describe('for ' + funcName + ' messages', () => {
+    beforeEach(() => {
       parser = new Parser()
       spyFunc = makeSpy(parser)
       vi.spyOn(parser, "parseData")
     })
 
     strings.forEach(function(value) {
-      it('should call ' + funcName + '-related methods for ' + value, function() {
+      it('should call ' + funcName + '-related methods for ' + value, () => {
         parser.parseData(value)
         expect(spyFunc).to.have.been.calledWith(value)
       })
     })
   })
-  describe("for non-status messages", function() {
-    beforeEach(function() {
+  describe("for non-status messages", () => {
+    beforeEach(() => {
       parser = new Parser()
       spyFunc = makeSpy(parser)
       vi.spyOn(parser, "parseData")
@@ -37,7 +37,7 @@ var generateSuccessTest = function(
     Object.entries(validStrings).forEach(function(entry) {
       if (JSON.stringify(entry[1]) !== JSON.stringify(strings)) {
         entry[1].forEach(function(value) {
-          it('should not call ' + funcName + '-related methods for ' + value, function() {
+          it('should not call ' + funcName + '-related methods for ' + value, () => {
             parser.parseData(value)
             expect(spyFunc).not.have.been.calledWith(value)
           })
@@ -47,8 +47,8 @@ var generateSuccessTest = function(
   })
 }
 
-describe('Parser', function() {
-  describe('#parseData()', function() {
+describe('Parser', () => {
+  describe('#parseData()', () => {
     generateSuccessTest("statusReport", validStrings.status, function(parser) { return vi.spyOn(parser.statusExtractor, "statusReport") })
     generateSuccessTest("successReport", validStrings.success, function(parser) { return vi.spyOn(parser.extractor, "successReport") })
     generateSuccessTest("grblInitReport", validStrings.init, function(parser) { return vi.spyOn(parser.extractor, "grblInitReport") })
@@ -65,7 +65,7 @@ describe('Parser', function() {
     generateSuccessTest("echoReport", validStrings.echo, function(parser) { return vi.spyOn(parser.extractor, "echoReport") })
     generateSuccessTest("startupLineReport", validStrings.startupLine, function(parser) { return vi.spyOn(parser.extractor, "startupLineReport") })
 
-    it("should dispatch unknown message type for non-grbl strings", function() {
+    it("should dispatch unknown message type for non-grbl strings", () => {
       parser = new Parser()
       spyFunc = vi.spyOn(parser.dispatcher, "dispatch")
 
