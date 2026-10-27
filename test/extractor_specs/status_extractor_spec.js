@@ -1,6 +1,9 @@
-var StatusExtractor = require('../../lib/status_extractor')
-var expect = require('chai').expect
-var validStrings = require('../spec_constants').validStrings
+import { StatusExtractor } from '../../dist/lib/status_extractor.js'
+import chai from 'chai'
+const expect = chai.expect
+import { validStrings } from '../spec_constants.js'
+
+var statusExtractor
 
 describe('StatusExtractor', function() {
   before(function() {

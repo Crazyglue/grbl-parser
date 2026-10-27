@@ -1,7 +1,10 @@
 {
-  "tsconfig": {
-    "tsinputfiles": ["./lib/**/*.ts", "./index.ts"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "strict": false,
-    "target": "es2015"
-  }
+    "outDir": "dist"
+  },
+  "include": ["lib/**/*.ts", "index.ts"]
 }

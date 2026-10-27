@@ -1,3 +1,6 @@
+// Grbl setting-code lookup table, generated as a module so the compiled
+// library is self-contained under dist/ (data-as-code replaces the JSON files).
+export const settingCodes =
 {
   "0": {
     "code": "0",
@@ -203,4 +206,4 @@
     "units": "millimeters",
     "description": "Maximum Z-axis travel distance from homing switch. Determines valid machine space for soft-limits and homing search distances."
   }
-}
+};

@@ -1,3 +1,5 @@
+// Grbl gcode/mcode/tool lookup tables.
+export const gcodeMap =
 {
   "gcode": {
     "G0": {
@@ -61,3 +63,4 @@
     }
   }
 }
+;

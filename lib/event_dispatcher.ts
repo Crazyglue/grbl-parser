@@ -1,34 +1,31 @@
-const dispatcherMessageTypes = require("./constants").messageTypes
+import { messageTypes } from "./constants.js";
 
-var EventDispatcher = function() {
-  this.listeners = []
-}
+export class EventDispatcher {
+  listeners: any[] = [];
 
-EventDispatcher.prototype.dispatch = function(type, data) {
-  this.listeners.forEach(function(listener) {
-    if (listener.type === type) {
-      listener.func(data)
+  dispatch(type: string, data: any): void {
+    this.listeners.forEach((listener) => {
+      if (listener.type === type) {
+        listener.func(data);
+      }
+    });
+  }
+
+  addListener(type: string, func: any): void {
+    this.listeners.push({ type, func });
+  }
+
+  removeListener(type: string, func: any): void {
+    this.listeners.forEach((listener, index) => {
+      if (listener.type == type && listener.func == func) {
+        this.listeners.splice(index, 1);
+      }
+    });
+  }
+
+  addToAllListeners(func: any): void {
+    for (const key in messageTypes) {
+      this.addListener(key, func);
     }
-  })
+  }
 }
-
-EventDispatcher.prototype.addListener = function(type, func) {
-  this.listeners.push({type: type, func: func})
-}
-
-EventDispatcher.prototype.removeListener = function(type, func) {
-  var index = this.listeners.indexOf({type: type, func: func})
-  this.listeners.forEach(function(listener, index) {
-    if (listener.type == type && listener.func == func) {
-      this.listeners.splice(index, 1)
-    }
-  }, (this as any))
-}
-
-EventDispatcher.prototype.addToAllListeners = function(func) {
-  for (var key in dispatcherMessageTypes) {
-      this.addListener(key, func)
-    }
-}
-
-module.exports = EventDispatcher

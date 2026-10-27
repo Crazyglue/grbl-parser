@@ -1,6 +1,5 @@
 node_modules/
 coverage/
 npm-debug.log
-lib/*.js
-lib/utils/*.js
-index.js
+dist/
+coverage-*.json

@@ -1,7 +1,10 @@
-var Checker = require('../lib/checker')
-var expect = require('chai').expect
-var constants = require('./spec_constants')
-var _ = require('lodash')
+import { Checker } from '../dist/lib/checker.js'
+import chai from 'chai'
+const expect = chai.expect
+import * as constants from './spec_constants.js'
+import _ from 'lodash'
+
+var check
 
 var generateTests = function(func, messageType) {
   generateTrueTest(func, messageType)

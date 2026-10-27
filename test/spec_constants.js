@@ -1,4 +1,4 @@
-module.exports.validStrings = {
+export const validStrings = {
   status: [
     "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM|Pn:XYZPDHRS>",
     "<Idle|WPos:0.000,0.000,0.000|FS:0,0|Pn:XHS>",

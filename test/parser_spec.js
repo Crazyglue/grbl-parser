@@ -1,9 +1,12 @@
-var Parser = require('../lib/parser')
-var Extractor = require('../lib/extractor')
-var expect = require('chai').expect
-var validStrings = require('./spec_constants').validStrings
-var sinon = require("sinon")
-var _ = require("lodash")
+import { Parser } from '../dist/lib/parser.js'
+import { Extractor } from '../dist/lib/extractor.js'
+import chai from 'chai'
+const expect = chai.expect
+import { validStrings } from './spec_constants.js'
+import sinon from 'sinon'
+import _ from 'lodash'
+
+var parser, spyFunc
 
 var generateSuccessTest = function(funcName, strings, extractorName) {
   describe('for ' + funcName + ' messages', function() {

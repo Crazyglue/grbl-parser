@@ -1,10 +1,10 @@
-var expect = require('chai').expect
-var _ = require("lodash")
-var sinon = require("sinon")
+import chai from 'chai'
+const expect = chai.expect
+import _ from 'lodash'
+import sinon from 'sinon'
 
-var Extractor = require('../lib/extractor')
-var Parser = require('../lib/parser')
-var validStrings = require('./spec_constants').validStrings
+import { EventDispatcher } from '../dist/lib/event_dispatcher.js'
+import { validStrings } from './spec_constants.js'
 
 describe('EventDispatcher', function() {
   describe('#addListener()', function() {

@@ -1,230 +1,216 @@
-const statusConstants = require("./constants")
-const statusMap = statusConstants.statusMap
-const subStateMessage = statusConstants.subStateMessage
-const statusMessageTypes = statusConstants.messageTypes
-var statusParseCoordinates = require("./utils/extractor_utils").parseCoordinates
+import { messageTypes, statusMap, subStateMessage } from "./constants.js";
+import { parseCoordinates } from "./utils/extractor_utils.js";
 
-var StatusExtractor = function() {}
+export class StatusExtractor {
+  statusReport(message: string): any {
+    const report: any = {};
+    // <Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>
+    // <Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000>
+    const match = message.match(/^<(.*)>$/)[1];
+    // Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:0,0|WCO:0.000,0.000,306.351
+    // Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000
 
-StatusExtractor.prototype.statusReport = function(message) {
-  var report: any = {}
-  // <Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>
-  // <Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000>
-  var match = message.match(/^<(.*)>$/)[1]
-  // Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:0,0|WCO:0.000,0.000,306.351
-  // Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000
+    if (message.includes(",MPos:") || message.includes(",WPos:")) {
+      const statusData = match.match(/(\w+)\,(.+)/);
+      report.status = this.parseStatus(statusData[1]); // Idle
+      const statusParams = statusData[2].match(/([a-zA-Z]+)\:([\d\,\.\-\|]+)\,?/g); // [ "MPos:0.000,0.000,0.000,", "WPos:0.000,0.000,0.000,", "Buf:0,", "RX:0,", "Lim:000" ]
 
-  if (message.includes(",MPos:") || message.includes(",WPos:")) {
-    var statusData = match.match(/(\w+)\,(.+)/)
-    report.status = this.parseStatus(statusData[1]) // Idle
-    var statusParams = statusData[2].match(/([a-zA-Z]+)\:([\d\,\.\-\|]+)\,?/g) // [ "MPos:0.000,0.000,0.000,", "WPos:0.000,0.000,0.000,", "Buf:0,", "RX:0,", "Lim:000" ]
+      const buffer = [];
 
-    var paramMap = {}
-    var buffer = []
+      statusParams.forEach((param) => {
+        const paramData = param.split(":"); // [ "MPos", "0.000,0.000,0.000," ]
+        const key = paramData[0];
+        const value = paramData[1];
 
-    statusParams.forEach(function(param) {
-      var paramData = param.split(":")   // [ "MPos", "0.000,0.000,0.000," ]
-      var key = paramData[0]
-      var value = paramData[1]
+        if (key === "Buf")
+          buffer[0] = value.replace(",", "");
+        else if (key === "RX")
+          buffer[1] = value.replace(",", "");
+        else
+          report[statusMap[key]] = value;
+      });
 
-      if (key === "Buf")
-        buffer[0] = value.replace(",", "")
-      else if (key === "RX")
-        buffer[1] = value.replace(",", "")
-      else
-        report[statusMap[key]] = value
+      if (buffer.length > 0)
+        report.buffer = buffer.join(",");
+    } else {
+      const params = match.split("|");
+      // ["Hold:0", "MPos:0.000,0.000,0.000", "Bf:15,128", ...]
 
-    })
+      report.status = this.parseStatus(params[0]); // "Hold:0"
 
-    if (buffer.length > 0)
-      report.buffer = buffer.join(",")
-  }
+      const paramsPairs = params.slice(1, params.length);
 
-  else {
-    var params = match.split("|")
-    // ["Hold:0", "MPos:0.000,0.000,0.000", "Bf:15,128", ...]
-
-    report.status = this.parseStatus(params[0]) // "Hold:0"
-
-    var paramsPairs = params.slice(1, params.length)
-
-    paramsPairs.forEach(function(param) {
-      var paramData = param.split(":")
-      report[statusMap[paramData[0]]] = paramData[1]
-    })
-  }
-
-  if (report.machinePosition) {
-    report.machinePosition = statusParseCoordinates(report.machinePosition)
-  }
-
-  if (report.workPosition) {
-    report.workPosition = statusParseCoordinates(report.workPosition)
-  }
-
-  if (report.workcoordinateOffset) {
-    report.workcoordinateOffset = statusParseCoordinates(report.workcoordinateOffset)
-  }
-
-  if (report.accessories) {
-    report.accessories = this.parseAccessories(report.accessories)
-  }
-
-  if (report.buffer) {
-    report.buffer = this.parseBuffer(report.buffer)
-  }
-
-  if (report.realtimeFeed) {
-    report.realtimeFeed = this.parseFeeds(report.realtimeFeed)
-  }
-
-  if (report.override) {
-    report.override = this.parseOverride(report.override)
-  }
-
-  if (report.pins) {
-    report.pins = this.parsePins(report.pins)
-  }
-
-  return {
-    data: report,
-    type: statusMessageTypes.status,
-    input: message
-  }
-}
-
-StatusExtractor.prototype.parsePins = function(pins) {
-  var data = []
-  var limitPinMap = {
-    0: "limit-x",
-    1: "limit-y",
-    2: "limit-z"
-  }
-  var controlPinMap = {
-    0: "door",
-    1: "hold",
-    2: "soft-reset",
-    3: "cycle-start",
-  }
-
-  if (/([01]+)\,?([01])?\,?([01]+)?/.test(pins)) {
-    // 000,1,0000
-    var pinMatch = pins.match(/(\d{3})?(\|\d\|)?(\d+)?/)
-    var xyzPins = pinMatch[1]
-    var probePin = pinMatch[2]
-    var controlPins = pinMatch[3]
-
-    if (xyzPins) {
-      var limitPins = xyzPins.split("")
-      limitPins.forEach(function(value, index) {
-        var pin = { pin: limitPinMap[index], on: (value === "1") }
-        data.push(pin)
-      })
+      paramsPairs.forEach((param) => {
+        const paramData = param.split(":");
+        report[statusMap[paramData[0]]] = paramData[1];
+      });
     }
 
-    if (probePin) {
-      data.push({ pin: "probe", on: probePin.replace(/\|/g, "") === "1" })
+    if (report.machinePosition) {
+      report.machinePosition = parseCoordinates(report.machinePosition);
     }
 
-    if (controlPins) {
-      controlPins.split("").forEach(function(pin, index) {
-        data.push({ pin: controlPinMap[index], on: pin === "1" })
-      })
+    if (report.workPosition) {
+      report.workPosition = parseCoordinates(report.workPosition);
     }
-  }
 
-  else {
-    var grbl11pinMap = {
-      "X": "limit-x",
-      "Y": "limit-y",
-      "Z": "limit-z",
-      "P": "probe",
-      "D": "door",
-      "H": "hold",
-      "R": "soft-reset",
-      "S": "cycle-start",
+    if (report.workcoordinateOffset) {
+      report.workcoordinateOffset = parseCoordinates(report.workcoordinateOffset);
     }
-    var pinData = pins.split("")
 
-    pinData.forEach(function(pinChar, index) {
-      var pin = { pin: grbl11pinMap[pinChar], on: true }
-      data.push(pin)
-    })
+    if (report.accessories) {
+      report.accessories = this.parseAccessories(report.accessories);
+    }
 
-  }
-  return data
-}
+    if (report.buffer) {
+      report.buffer = this.parseBuffer(report.buffer);
+    }
 
-StatusExtractor.prototype.parseStatus = function(status) {
-  // Hold:0
-  var match = status.split(":")
+    if (report.realtimeFeed) {
+      report.realtimeFeed = this.parseFeeds(report.realtimeFeed);
+    }
 
-  var parsedStatus: any = {
-    state: match[0]
-  }
+    if (report.override) {
+      report.override = this.parseOverride(report.override);
+    }
 
-  if (match[1]) {
-    parsedStatus.code = parseFloat(match[1])
-    parsedStatus.message = subStateMessage[match[0]][match[1]]
-  }
+    if (report.pins) {
+      report.pins = this.parsePins(report.pins);
+    }
 
-  return parsedStatus
-}
-
-StatusExtractor.prototype.parseAccessories = function(accessories) {
-  // SFM
-  var flags = accessories.split("")
-  var parsedAccessories: any = {}
-
-  if (flags.indexOf("F") > -1)
-    parsedAccessories.flood = true
-  else
-    parsedAccessories.flood = false
-
-  if (flags.indexOf("M") > -1)
-    parsedAccessories.mist = true
-  else
-    parsedAccessories.mist = false
-
-  if (flags.indexOf("S") > -1)
-    parsedAccessories.spindleDirection = "clockwise"
-  else
-    parsedAccessories.spindleDirection = "counter-clockwise"
-
-  return parsedAccessories
-}
-
-StatusExtractor.prototype.parseBuffer = function(buffer) {
-  // example input: "15,128"
-  var bufferData = buffer.split(",")
-  var parsedBuffer = {
-    availableBlocks: parseFloat(bufferData[0]),
-    availableRXBytes: parseFloat(bufferData[1])
+    return {
+      data: report,
+      type: messageTypes.status,
+      input: message
+    };
   }
 
-  return parsedBuffer
-}
+  parsePins(pins: string): any {
+    const data = [];
+    const limitPinMap = {
+      0: "limit-x",
+      1: "limit-y",
+      2: "limit-z"
+    };
+    const controlPinMap = {
+      0: "door",
+      1: "hold",
+      2: "soft-reset",
+      3: "cycle-start",
+    };
 
-StatusExtractor.prototype.parseFeeds = function(feeds) {
-  // example input: "15.432,12000.5"
-  var feedData = feeds.split(",")
-  var parsedFeeds: any = {}
+    if (/([01]+)\,?([01])?\,?([01]+)?/.test(pins)) {
+      // 000,1,0000
+      const pinMatch = pins.match(/(\d{3})?(\|\d\|)?(\d+)?/);
+      const xyzPins = pinMatch[1];
+      const probePin = pinMatch[2];
+      const controlPins = pinMatch[3];
 
-  parsedFeeds.realtimeFeedrate = parseFloat(feedData[0])
-  parsedFeeds.realtimeSpindle = parseFloat(feedData[1])
+      if (xyzPins) {
+        const limitPins = xyzPins.split("");
+        limitPins.forEach((value, index) => {
+          const pin = { pin: limitPinMap[index], on: value === "1" };
+          data.push(pin);
+        });
+      }
 
-  return parsedFeeds
-}
+      if (probePin) {
+        data.push({ pin: "probe", on: probePin.replace(/\|/g, "") === "1" });
+      }
 
-StatusExtractor.prototype.parseOverride = function(override) {
-  // 120,100,100
-  var overrideData = override.split(",")
+      if (controlPins) {
+        controlPins.split("").forEach((pin, index) => {
+          data.push({ pin: controlPinMap[index], on: pin === "1" });
+        });
+      }
+    } else {
+      const grbl11pinMap = {
+        "X": "limit-x",
+        "Y": "limit-y",
+        "Z": "limit-z",
+        "P": "probe",
+        "D": "door",
+        "H": "hold",
+        "R": "soft-reset",
+        "S": "cycle-start",
+      };
+      const pinData = pins.split("");
 
-  return {
-    feeds: parseFloat(overrideData[0]),
-    rapids: parseFloat(overrideData[1]),
-    spindle: parseFloat(overrideData[2])
+      pinData.forEach((pinChar) => {
+        const pin = { pin: grbl11pinMap[pinChar], on: true };
+        data.push(pin);
+      });
+    }
+    return data;
+  }
+
+  parseStatus(status: string): any {
+    // Hold:0
+    const match = status.split(":");
+
+    const parsedStatus: any = {
+      state: match[0]
+    };
+
+    if (match[1]) {
+      parsedStatus.code = parseFloat(match[1]);
+      parsedStatus.message = subStateMessage[match[0]][match[1]];
+    }
+
+    return parsedStatus;
+  }
+
+  parseAccessories(accessories: string): any {
+    // SFM
+    const flags = accessories.split("");
+    const parsedAccessories: any = {};
+
+    if (flags.indexOf("F") > -1)
+      parsedAccessories.flood = true;
+    else
+      parsedAccessories.flood = false;
+
+    if (flags.indexOf("M") > -1)
+      parsedAccessories.mist = true;
+    else
+      parsedAccessories.mist = false;
+
+    if (flags.indexOf("S") > -1)
+      parsedAccessories.spindleDirection = "clockwise";
+    else
+      parsedAccessories.spindleDirection = "counter-clockwise";
+
+    return parsedAccessories;
+  }
+
+  parseBuffer(buffer: string): any {
+    // example input: "15,128"
+    const bufferData = buffer.split(",");
+    return {
+      availableBlocks: parseFloat(bufferData[0]),
+      availableRXBytes: parseFloat(bufferData[1])
+    };
+  }
+
+  parseFeeds(feeds: string): any {
+    // example input: "15.432,12000.5"
+    const feedData = feeds.split(",");
+    const parsedFeeds: any = {};
+
+    parsedFeeds.realtimeFeedrate = parseFloat(feedData[0]);
+    parsedFeeds.realtimeSpindle = parseFloat(feedData[1]);
+
+    return parsedFeeds;
+  }
+
+  parseOverride(override: string): any {
+    // 120,100,100
+    const overrideData = override.split(",");
+
+    return {
+      feeds: parseFloat(overrideData[0]),
+      rapids: parseFloat(overrideData[1]),
+      spindle: parseFloat(overrideData[2])
+    };
   }
 }
-
-module.exports = StatusExtractor

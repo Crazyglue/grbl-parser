@@ -1,6 +1,9 @@
-var Extractor = require('../../lib/extractor')
-var expect = require('chai').expect
-var validStrings = require('../spec_constants').validStrings
+import { Extractor } from '../../dist/lib/extractor.js'
+import chai from 'chai'
+const expect = chai.expect
+import { validStrings } from '../spec_constants.js'
+
+var extractor
 
 describe('Extractor', function() {
   before(function() {
