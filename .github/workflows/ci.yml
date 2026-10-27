@@ -11,15 +11,16 @@ on:
 jobs:
   test:
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
 
       # Installs from package-lock.json: exact pins (typescript 5.9.2,
-      # @types/node 24.19.2, mocha 3.2, chai 3, sinon 2, lodash 4, c8).
+      # @types/node 24.19.2, vitest 5.0.5 + @vitest/coverage-v8 as devDeps).
       - run: npm ci
 
-      # build (tsc -p .) + mocha suite; expect 1448 passing.
+      # build (tsc -p .) + strict spec typecheck (tsconfig.tests.json) + vitest
+      # suite; expect 1448 passing.
       - run: npm test
