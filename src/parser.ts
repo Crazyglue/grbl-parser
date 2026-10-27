@@ -1,12 +1,13 @@
 import { Checker } from "./checker.js";
 import { EventDispatcher } from "./event_dispatcher.js";
 import { Extractor } from "./extractor.js";
-import { messageTypes } from "./constants.js";
+import { messageTypes, MessageTypes } from "./constants.js";
+import { UnknownResult } from "./results.js";
 import { StatusExtractor } from "./status_extractor.js";
 
 export class Parser {
   check: Checker;
-  messageTypes: any;
+  messageTypes: MessageTypes;
   statusExtractor: StatusExtractor;
   extractor: Extractor;
   dispatcher: EventDispatcher;
@@ -19,8 +20,8 @@ export class Parser {
     this.dispatcher = new EventDispatcher();
   }
 
-  parseData(string: string): void {
-    const data = string.trim();
+  parseData(input: string): void {
+    const data = input.trim();
     if (this.check.isStatusReport(data)) {
       const statusData = this.statusExtractor.statusReport(data);
       this.dispatcher.dispatch(this.messageTypes.status, statusData);
@@ -96,7 +97,7 @@ export class Parser {
     }
 
     else {
-      const unknownData = { input: data, type: this.messageTypes.unknown };
+      const unknownData: UnknownResult = { input: data, type: this.messageTypes.unknown };
       this.dispatcher.dispatch(this.messageTypes.unknown, unknownData);
     }
   }

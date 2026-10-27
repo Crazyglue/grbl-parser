@@ -1,4 +1,10 @@
-export function parseCoordinates(position: string): { x: number; y: number; z: number } {
+export interface Position {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export function parseCoordinates(position: string): Position {
   // example input: "23.3242,102.2234,0.4200"
   const coordinates = position.split(",");
   return {

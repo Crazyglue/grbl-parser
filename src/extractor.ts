@@ -1,12 +1,35 @@
 import { alarmMap, buildOptionsMap, errorMap, gcodeMap, messageTypes, settingsMap } from "./constants.js";
 import { parseCoordinates } from "./utils/extractor_utils.js";
+import {
+  AlarmResult,
+  BuildOptionEntry,
+  BuildOptionsResult,
+  BuildVersionResult,
+  BuildVersionData,
+  CodeStateEntry,
+  CodeInfo,
+  EchoResult,
+  ErrorOrAlarmData,
+  ErrorResult,
+  FeedbackResult,
+  GcodeStateResult,
+  GcodeSystemResult,
+  HelpResult,
+  InitializeResult,
+  MessageOnlyData,
+  ProbeResult,
+  SettingData,
+  SettingResult,
+  StartupResult,
+  SuccessResult
+} from "./results.js";
 
 export class Extractor {
-  gcodeStateReport(state: string): any {
+  gcodeStateReport(state: string): GcodeStateResult {
     // [GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]
     const gcodeData = state.replace("[", "").replace("]", "").replace("GC:", "").split(" ");
 
-    const codes = [];
+    const codes: CodeStateEntry[] = [];
 
     gcodeData.forEach((code) => {
       if (/G.+/.test(code))
@@ -35,10 +58,12 @@ export class Extractor {
     };
   }
 
-  grblInitReport(init: string): any {
+  grblInitReport(init: string): InitializeResult {
     // Grbl 1.1f ['$' for help]
-
     const initData = init.match(/^Grbl\sv?(\d\.\d.)\s\[\'\$\'\sfor\shelp\]$/);
+    if (!initData)
+      throw new Error("Unrecognized initialization response: " + init);
+
     return {
       type: messageTypes.initialize,
       data: {
@@ -48,10 +73,10 @@ export class Extractor {
     };
   }
 
-  errorReport(error: string): any {
+  errorReport(error: string): ErrorResult {
     // error:9
     // error:Bad number format
-    const data: any = {};
+    const data: ErrorOrAlarmData = {};
 
     const errorData = error.split(":");
     const err = errorData[1];
@@ -68,12 +93,11 @@ export class Extractor {
     };
   }
 
-  alarmReport(alarm: string): any {
+  alarmReport(alarm: string): AlarmResult {
     // ALARM:9
     // ALARM:Hard/soft limit
-
     const alarmData = alarm.split(":")[1];
-    const data: any = {};
+    const data: ErrorOrAlarmData = {};
 
     if (Number.isInteger(parseInt(alarmData))) {
       data.code = parseInt(alarmData);
@@ -88,14 +112,16 @@ export class Extractor {
     };
   }
 
-  buildVersionReport(version: string): any {
+  buildVersionReport(version: string): BuildVersionResult {
     // [VER:1.1f.20170131:]
-
     const versionMatch = version.replace("[", "").replace("VER:", "").replace("]", "").split(":"); //  '1.1f.20170131', 'My string!!'
-    const versionData: any = versionMatch[0].match(/^(.+)\.(\d{8})$/);
-    const data: any = {};
-    data.firmwareVersion = versionData[1];
-    data.buildDate = versionData[2];
+    const versionData = versionMatch[0].match(/^(.+)\.(\d{8})$/);
+    if (!versionData)
+      throw new Error("Unrecognized build version: " + version);
+    const data: BuildVersionData = {
+      firmwareVersion: versionData[1],
+      buildDate: versionData[2]
+    };
 
     if (versionMatch[1])
       data.buildString = versionMatch[1];
@@ -107,19 +133,18 @@ export class Extractor {
     };
   }
 
-  buildOptionsReport(options: string): any {
+  buildOptionsReport(options: string): BuildOptionsResult {
     // [OPT:V,15,128]
-
     const versionMatch = options.match(/\[(.+)\]/);
-    let versionData: any = versionMatch[1].split(":");
-
-    versionData = versionData[1];
+    if (!versionMatch)
+      throw new Error("Unrecognized build options: " + options);
+    const versionData = versionMatch[1].split(":")[1];
     const versionOptions = versionData.split(",");
     const versionCodes = versionOptions[0].split("");
     const versionExtras = versionOptions.slice(1, versionOptions.length);
 
-    const buildOptions = [];
-    const buildExtras = [];
+    const buildOptions: BuildOptionEntry[] = [];
+    const buildExtras: string[] = [];
 
     versionCodes.forEach((code) => {
       buildOptions.push({ code: code, message: buildOptionsMap[code] });
@@ -139,17 +164,23 @@ export class Extractor {
     };
   }
 
-  settingsReport(setting: string): any {
+  settingsReport(setting: string): SettingResult {
     // $10=255.5
-
     const settingData = setting.split("=");
+    const codeMatch = settingData[0].match(/\$(\d+)/);
+    if (!codeMatch)
+      throw new Error("Unrecognized setting report: " + setting);
 
-    const data: any = {};
-    data.code = parseFloat(settingData[0].match(/\$(\d+)/)[1]);
-    data.value = parseFloat(settingData[1]);
-    data.setting = settingsMap[data.code].setting;
-    data.units = settingsMap[data.code].units;
-    data.description = settingsMap[data.code].description;
+    const code = parseFloat(codeMatch[1]);
+    const entry = settingsMap[String(code)];
+
+    const data: SettingData = {
+      code: code,
+      value: parseFloat(settingData[1]),
+      setting: entry.setting,
+      units: entry.units,
+      description: entry.description
+    };
 
     return {
       type: messageTypes.setting,
@@ -158,36 +189,30 @@ export class Extractor {
     };
   }
 
-  probeResultReport(probeResult: string): any {
+  probeResultReport(probeResult: string): ProbeResult {
     // [PRB:0.000,0.000,1.492:1]
     const probeData = probeResult.replace("[PRB:", "").replace("]", "").split(":");
     // ["0.000, 0.000, 1.492", "1"]
-    const data: any = {};
-
-    data.location = parseCoordinates(probeData[0]);
-    data.success = parseInt(probeData[1]) === 1;
 
     return {
       type: messageTypes.probeResult,
-      data: data,
+      data: {
+        location: parseCoordinates(probeData[0]),
+        success: parseInt(probeData[1]) === 1
+      },
       input: probeResult
     };
   }
 
-  helpMessageReport(helpMessage: string): any {
+  helpMessageReport(helpMessage: string): HelpResult {
     // [HLP:$$ $# $G $I $N $x=val $Nx=line $J=line $SLP $C $X $H ~ ! ? ctrl-x]
     const helpData = helpMessage.replace("[HLP:", "").replace("]", "").split(" ");
 
-    const data: any = {};
-    data.availableCommands = [];
-
-    helpData.forEach((command) => {
-      data.availableCommands.push(command);
-    });
-
     return {
       type: messageTypes.helpMessage,
-      data: data,
+      data: {
+        availableCommands: helpData
+      },
       input: helpMessage
     };
   }
@@ -195,13 +220,13 @@ export class Extractor {
   // NOTE: this mutates the shared gcode-map entries (adds `coordinates` to
   // the map object itself) — behavior the test suite's deep-equal checks depend
   // on; do not "fix" it without updating the specs.
-  gcodeSystemReport(gcodeSystem: string): any {
+  gcodeSystemReport(gcodeSystem: string): GcodeSystemResult {
     // [G28:0.000,0.000,0.000]
     // [TLO:0.000]
     // [G28:0.000,-10.225,0.000]
-    let data: any = {};
     const systemData = gcodeSystem.replace("[", "").replace("]", "").split(":");
 
+    let data: CodeInfo;
     if (systemData[0] == "TLO") {
       data = gcodeMap.tool[systemData[0]];
       data.coordinates = { z: parseFloat(systemData[1]) };
@@ -217,56 +242,55 @@ export class Extractor {
     };
   }
 
-  echoReport(echo: string): any {
+  echoReport(echo: string): EchoResult {
     // [echo:G1X0.540Y10.4F100]
-    const data: any = {};
     const echoData = echo.replace("[", "").replace("]", "").split(":");
-    data.message = echoData[1];
 
     return {
       type: messageTypes.echoMessage,
-      data: data,
+      data: {
+        message: echoData[1]
+      },
       input: echo
     };
   }
 
-  startupLineReport(startupLine: string): any {
+  startupLineReport(startupLine: string): StartupResult {
     // >G54G20:ok
-    const data: any = {};
     const startupData = startupLine.replace(">", "").split(":");
-    data.line = startupData[0];
-    data.success = startupData[1] === "ok";
 
     return {
       type: messageTypes.gcodeStartup,
-      data: data,
+      data: {
+        line: startupData[0],
+        success: startupData[1] === "ok"
+      },
       input: startupLine
     };
   }
 
-  successReport(success: string): any {
+  successReport(success: string): SuccessResult {
     // ok
-    const data: any = {};
-    data.success = success === "ok";
-
     return {
       type: messageTypes.success,
-      data: data,
+      data: {
+        success: success === "ok"
+      },
       input: success
     };
   }
 
-  feedbackMessageReport(feedbackMessage: string): any {
+  feedbackMessageReport(feedbackMessage: string): FeedbackResult {
     // [MSG:‘$H’|’$X’ to unlock]
     // [Caution: Unlocked]
-    const data: any = {};
     const message = feedbackMessage.replace("[", "").replace("]", "");
+    let data: MessageOnlyData;
 
     if (message.includes("MSG:")) {
       const messageData = message.split(":");
-      data.message = messageData[1];
+      data = { message: messageData[1] };
     } else
-      data.message = message;
+      data = { message: message };
 
     return {
       type: messageTypes.feedbackMessage,

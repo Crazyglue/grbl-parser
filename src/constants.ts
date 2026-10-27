@@ -3,9 +3,41 @@
 export { settingCodes as settingsMap } from "./data/setting_codes.js";
 export { gcodeMap } from "./data/gcode_map.js";
 
-export const supportedVersions = ["Grbl 1.1e", "Grbl 1.1f"];
+// The dispatcher's message-type tags; each field's type is its own literal so
+// consumers can pin a result's `type` field to an exact tag.
+export interface MessageTypes {
+  status: "status";
+  success: "success";
+  initialize: "initialize";
+  alarm: "alarm";
+  error: "error";
+  setting: "setting";
+  feedbackMessage: "feedbackMessage";
+  buildVersion: "buildVersion";
+  buildOptions: "buildOptions";
+  gcodeState: "gcodeState";
+  helpMessage: "helpMessage";
+  gcodeSystem: "gcodeSystem";
+  probeResult: "probeResult";
+  echoMessage: "echoMessage";
+  gcodeStartup: "gcodeStartup";
+  unknown: "unknown";
+}
 
-export const alarmMap = {
+// The status-report fields the status extractor fills from param keys.
+export type StatusField =
+  "accessories" |
+  "buffer" |
+  "realtimeFeed" |
+  "machinePosition" |
+  "override" |
+  "pins" |
+  "workcoordinateOffset" |
+  "workPosition";
+
+export const supportedVersions: string[] = ["Grbl 1.1e", "Grbl 1.1f"];
+
+export const alarmMap: { [code: string]: string } = {
   1: "Hard limit triggered",
   2: "G-code motion target exceeds machine travel.",
   3: "Reset while in motion. Lost steps are likely.",
@@ -17,7 +49,7 @@ export const alarmMap = {
   9: "Homing fail. Could not find limit switch within search distance."
 };
 
-export const buildOptionsMap = {
+export const buildOptionsMap: { [flag: string]: string } = {
   "V": "Variable spindle enabled",
   "N": "Line numbers enabled",
   "M": "Mist coolant enabled",
@@ -36,7 +68,7 @@ export const buildOptionsMap = {
   "L": "Homing init lock sets Grbl into an alarm state upon power up"
 };
 
-export const errorMap = {
+export const errorMap: { [code: string]: string } = {
   1: "G-code words consist of a letter and a value. Letter was not found.",
   2: "Missing the expected G-code word value or numeric value format is not valid.",
   3: "Grbl '$' system command was not recognized or supported.",
@@ -75,7 +107,7 @@ export const errorMap = {
   38: "Tool number greater than max supported value.",
 };
 
-export const messageTypes = {
+export const messageTypes: MessageTypes = {
   status: "status",
   success: "success",
   initialize: "initialize",
@@ -94,7 +126,7 @@ export const messageTypes = {
   unknown: "unknown"
 };
 
-export const subStateMessage = {
+export const subStateMessage: { [state: string]: { [code: string]: string } } = {
   "Door": {
     0: "Door closed. Ready to resume.",
     1: "Machine stopped. Door still ajar. Can't resume until closed.",
@@ -107,7 +139,7 @@ export const subStateMessage = {
   }
 };
 
-export const statusMap = {
+export const statusMap: { [param: string]: StatusField } = {
   "A": "accessories",
   "Bf": "buffer",
   "Buf": "buffer",

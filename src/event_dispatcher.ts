@@ -1,9 +1,17 @@
 import { messageTypes } from "./constants.js";
+import { MessagePayload } from "./results.js";
+
+interface Listener {
+  type: string;
+  func: EventCallback;
+}
+
+type EventCallback = (data: MessagePayload) => void;
 
 export class EventDispatcher {
-  listeners: any[] = [];
+  listeners: Listener[] = [];
 
-  dispatch(type: string, data: any): void {
+  dispatch(type: string, data: MessagePayload): void {
     this.listeners.forEach((listener) => {
       if (listener.type === type) {
         listener.func(data);
@@ -11,11 +19,11 @@ export class EventDispatcher {
     });
   }
 
-  addListener(type: string, func: any): void {
+  addListener(type: string, func: EventCallback): void {
     this.listeners.push({ type, func });
   }
 
-  removeListener(type: string, func: any): void {
+  removeListener(type: string, func: EventCallback): void {
     this.listeners.forEach((listener, index) => {
       if (listener.type == type && listener.func == func) {
         this.listeners.splice(index, 1);
@@ -23,7 +31,7 @@ export class EventDispatcher {
     });
   }
 
-  addToAllListeners(func: any): void {
+  addToAllListeners(func: EventCallback): void {
     for (const key in messageTypes) {
       this.addListener(key, func);
     }
