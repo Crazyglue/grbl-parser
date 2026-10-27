@@ -1,3 +1,24 @@
+// Grbl gcode/mcode/tool lookup tables. `coordinates` is only ever present on
+// entries the gcode-system extractor mutates in place (see gcodeSystemReport);
+// it is declared optional so the shared map entries can gain it at runtime.
+export interface CoordinatesPayload {
+  x?: number;
+  y?: number;
+  z?: number;
+}
+
+export interface CodeInfo {
+  code: string;
+  name: string;
+  description: string;
+  coordinates?: CoordinatesPayload;
+}
+
+export const gcodeMap: {
+  gcode: { [name: string]: CodeInfo };
+  mcode: { [name: string]: CodeInfo };
+  tool: { [name: string]: CodeInfo };
+} =
 {
   "gcode": {
     "G0": {
@@ -61,3 +82,4 @@
     }
   }
 }
+;

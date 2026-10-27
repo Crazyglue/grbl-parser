@@ -1,0 +1,29 @@
+name: CI
+
+# Tests are green on Node 24 only (the suite has 3 gcodeState failures on Node
+# 22 — a shared-data load-order artifact). Pin Node explicitly to match the
+# local nvm 24 setup; .node-version = 24 is the same pin.
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    # GH Actions rejects a job without runs-on ("Required property is
+    # missing: runs-on"); pin the OS alongside the Node pin above.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # Installs from package-lock.json: exact pins (typescript 5.9.2,
+      # @types/node 24.19.2, vitest 5.0.5 + @vitest/coverage-v8 as devDeps).
+      - run: npm ci
+
+      # build (tsc -p .) + strict spec typecheck (tsconfig.tests.json) + vitest
+      # suite; expect 1448 passing.
+      - run: npm test

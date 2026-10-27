@@ -1,20 +1,22 @@
 {
   "name": "grbl-parser",
   "version": "0.1.5",
+  "type": "module",
   "description": "Javascript-based gcode parser for grbl",
-  "main": "./lib/parser",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha test/* --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "build": "tsc -p .",
+    "test": "tsc -p . && tsc -p tsconfig.tests.json && node ./node_modules/vitest/vitest.mjs run",
+    "coverage": "tsc -p . && tsc -p tsconfig.tests.json && node ./node_modules/vitest/vitest.mjs run --coverage",
+    "demo": "tsc -p . && node demo.ts"
   },
   "author": "Eric Dobroveanu",
   "license": "ISC",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "istanbul": "^0.4.5",
-    "istanbul-coveralls": "^1.0.3",
-    "lodash": "^4.17.4",
-    "mocha": "^3.2.0",
-    "sinon": "^2.1.0"
+    "@types/node": "^24.19.2",
+    "@vitest/coverage-v8": "^5.0.5",
+    "typescript": "^5.9.2",
+    "vitest": "^5.0.5"
   },
   "repository": {
     "type": "git",

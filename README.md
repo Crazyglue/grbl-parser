@@ -1,28 +1,30 @@
 # grbl-parser
 
-[![Coverage Status](https://coveralls.io/repos/github/Crazyglue/grbl-parser/badge.svg?branch=master)](https://coveralls.io/github/Crazyglue/grbl-parser?branch=master) [![Build Status](https://travis-ci.org/Crazyglue/grbl-parser.svg?branch=master)](https://travis-ci.org/Crazyglue/grbl-parser)
+[![CI](https://github.com/Crazyglue/grbl-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/Crazyglue/grbl-parser/actions)
 
-Grbl machine parser library written in javascript
+Grbl machine parser library written in TypeScript (ESM).
 
-Provides an event-based callbacks to parse any strings grbl may output.
+Provides event-based callbacks to parse any strings grbl may output.
 
 Supports Grbl 0.9, 1.0, and 1.1 (untested with grbl 0.8)
 
 ## Installation
 
 ```bash
-npm install grbl-parser --save
+npm install grbl-parser
 ```
+
+Requires Node 24+.
 
 ## Usage
 
 ```javascript
-var GrblParser = require("grbl-parser")
-var parser = new GrblParser()
-var myCallback = function(parsedData) {
+import { Parser } from "grbl-parser"
+const parser = new Parser()
+const myCallback = function (parsedData) {
   // do stuff with parsed data (see example status output in Examples section)
 }
-var myString = "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
+const myString = "<Hold:0|MPos:0.000,0.000,0.000|Bf:15,128|FS:675.5,24000|Ov:120,100,100|WCO:0.000,-5.200,306.351|A:SFM>"
 
 parser.dispatcher.addListener("status", myCallback) // bind myCallback to grbl status reports
 parser.parseData(myString)
@@ -54,9 +56,19 @@ Use these to bind to specific message types
 You can get all message types:
 
 ```javascript
-console.log(new GrblParser().messageTypes)
+console.log(new Parser().messageTypes)
 // [ status: "status", alarm: "alarm", ... ]
 ```
+
+## Development
+
+The library lives in `src/` and compiles with `tsc` into `dist/` (the package
+entry point is the built barrel, `dist/index.js`). Tests are TypeScript specs
+in `test/` that run against the built output with
+[vitest](https://vitest.dev) — `npm test` builds, strictly type-checks the
+specs against the emitted `.d.ts` files, then runs the suite; `npm run
+coverage` adds the v8 coverage report; `npm run demo` runs `demo.ts` (Node
+type-stripping). The suite expects Node 24; see `.nvmrc` / `.node-version`.
 
 ## Examples
 
@@ -119,7 +131,7 @@ parser.parseData("error:20")
 
 {
   data: {
-    code: "20",
+    code: 20,
     message: "Unsupported or invalid g-code command found in block."
   },
   input: "error:20",

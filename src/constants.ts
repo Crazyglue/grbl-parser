@@ -1,9 +1,43 @@
-module.exports.settingsMap = require('./data/setting_codes.json')
-module.exports.gcodeMap = require('./data/gcode_map.json')
+// Grbl's fixed lookup tables: setting codes, gcode/mcode/tool maps, error
+// and alarm messages, and the event-dispatcher message-type tags.
+export { settingCodes as settingsMap } from "./data/setting_codes.js";
+export { gcodeMap } from "./data/gcode_map.js";
 
-module.exports.supportedVersions = ['Grbl 1.1e', 'Grbl 1.1f']
+// The dispatcher's message-type tags; each field's type is its own literal so
+// consumers can pin a result's `type` field to an exact tag.
+export interface MessageTypes {
+  status: "status";
+  success: "success";
+  initialize: "initialize";
+  alarm: "alarm";
+  error: "error";
+  setting: "setting";
+  feedbackMessage: "feedbackMessage";
+  buildVersion: "buildVersion";
+  buildOptions: "buildOptions";
+  gcodeState: "gcodeState";
+  helpMessage: "helpMessage";
+  gcodeSystem: "gcodeSystem";
+  probeResult: "probeResult";
+  echoMessage: "echoMessage";
+  gcodeStartup: "gcodeStartup";
+  unknown: "unknown";
+}
 
-module.exports.alarmMap = {
+// The status-report fields the status extractor fills from param keys.
+export type StatusField =
+  "accessories" |
+  "buffer" |
+  "realtimeFeed" |
+  "machinePosition" |
+  "override" |
+  "pins" |
+  "workcoordinateOffset" |
+  "workPosition";
+
+export const supportedVersions: string[] = ["Grbl 1.1e", "Grbl 1.1f"];
+
+export const alarmMap: { [code: string]: string } = {
   1: "Hard limit triggered",
   2: "G-code motion target exceeds machine travel.",
   3: "Reset while in motion. Lost steps are likely.",
@@ -13,9 +47,9 @@ module.exports.alarmMap = {
   7: "Homing fail. Safety door was opened during active homing cycle.",
   8: "Homing fail. Cycle failed to clear limit switch when pulling off.",
   9: "Homing fail. Could not find limit switch within search distance."
-}
+};
 
-module.exports.buildOptionsMap = {
+export const buildOptionsMap: { [flag: string]: string } = {
   "V": "Variable spindle enabled",
   "N": "Line numbers enabled",
   "M": "Mist coolant enabled",
@@ -32,9 +66,9 @@ module.exports.buildOptionsMap = {
   "E": "Force sync upon EEPROM write disabled",
   "W": "Force sync upon work coordinate offset change disabled",
   "L": "Homing init lock sets Grbl into an alarm state upon power up"
-}
+};
 
-module.exports.errorMap = {
+export const errorMap: { [code: string]: string } = {
   1: "G-code words consist of a letter and a value. Letter was not found.",
   2: "Missing the expected G-code word value or numeric value format is not valid.",
   3: "Grbl '$' system command was not recognized or supported.",
@@ -71,9 +105,9 @@ module.exports.errorMap = {
   36: "Unused value words found in block.",
   37: "G43.1 dynamic tool length offset is not assigned to configured tool length axis.",
   38: "Tool number greater than max supported value.",
-}
+};
 
-module.exports.messageTypes = {
+export const messageTypes: MessageTypes = {
   status: "status",
   success: "success",
   initialize: "initialize",
@@ -90,9 +124,9 @@ module.exports.messageTypes = {
   echoMessage: "echoMessage",
   gcodeStartup: "gcodeStartup",
   unknown: "unknown"
-}
+};
 
-module.exports.subStateMessage = {
+export const subStateMessage: { [state: string]: { [code: string]: string } } = {
   "Door": {
     0: "Door closed. Ready to resume.",
     1: "Machine stopped. Door still ajar. Can't resume until closed.",
@@ -103,9 +137,9 @@ module.exports.subStateMessage = {
     0: "Hold complete. Ready to resume.",
     1: "Hold in-progress. Reset will throw an alarm."
   }
-}
+};
 
-module.exports.statusMap = {
+export const statusMap: { [param: string]: StatusField } = {
   "A": "accessories",
   "Bf": "buffer",
   "Buf": "buffer",
@@ -118,4 +152,4 @@ module.exports.statusMap = {
   "Pin": "pins",
   "WCO": "workcoordinateOffset",
   "WPos": "workPosition"
-}
+};
