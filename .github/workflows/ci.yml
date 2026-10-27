@@ -10,6 +10,9 @@ on:
 
 jobs:
   test:
+    # GH Actions rejects a job without runs-on ("Required property is
+    # missing: runs-on"); pin the OS alongside the Node pin above.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
