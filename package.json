@@ -4,17 +4,21 @@
   "description": "Javascript-based gcode parser for grbl",
   "main": "./lib/parser",
   "scripts": {
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha test/* --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "build": "node ./node_modules/typescript/bin/tsc -p .",
+    "test": "node ./node_modules/typescript/bin/tsc -p . && ./node_modules/mocha/bin/_mocha test/*",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha test/* --report lcovonly -R spec && cat ./coverage/lcov.info | ./node_modules/istanbul-coveralls/bin/istanbul-coveralls.js && rm -rf ./coverage"
   },
   "author": "Eric Dobroveanu",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "istanbul-coveralls": "^1.0.3",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0",
-    "sinon": "^2.1.0"
+    "sinon": "^2.1.0",
+    "typescript": "^5.9.2"
   },
   "repository": {
     "type": "git",
