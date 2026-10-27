@@ -6,8 +6,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p .",
-    "test": "tsc -p . && node ./node_modules/vitest/vitest.mjs run",
-    "coverage": "tsc -p . && node ./node_modules/vitest/vitest.mjs run --coverage",
+    "test": "tsc -p . && tsc -p tsconfig.tests.json && node ./node_modules/vitest/vitest.mjs run",
+    "coverage": "tsc -p . && tsc -p tsconfig.tests.json && node ./node_modules/vitest/vitest.mjs run --coverage",
     "demo": "tsc -p . && node demo.ts"
   },
   "author": "Eric Dobroveanu",
