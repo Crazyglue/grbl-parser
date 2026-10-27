@@ -5,24 +5,23 @@
   "description": "Javascript-based gcode parser for grbl",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "node ./node_modules/typescript/bin/tsc -p .",
-    "test": "node ./node_modules/typescript/bin/tsc -p . && ./node_modules/mocha/bin/_mocha test/*",
-    "coverage": "node ./node_modules/typescript/bin/tsc -p . && node ./node_modules/c8/bin/c8.js ./node_modules/mocha/bin/_mocha test/*",
-    "demo": "node ./node_modules/typescript/bin/tsc -p . && node demo.ts"
+    "build": "tsc -p .",
+    "test": "tsc -p . && node ./node_modules/vitest/vitest.mjs run",
+    "coverage": "tsc -p . && node ./node_modules/vitest/vitest.mjs run --coverage",
+    "demo": "tsc -p . && node demo.ts"
   },
   "author": "Eric Dobroveanu",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^24.19.2",
-    "c8": "^12.0.0",
-    "chai": "^3.5.0",
-    "lodash": "^4.17.4",
-    "mocha": "^3.2.0",
-    "sinon": "^2.1.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^5.0.5"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/Crazyglue/grbl-parser.git"
+  },
+  "dependencies": {
+    "@vitest/coverage-v8": "^5.0.5"
   }
 }

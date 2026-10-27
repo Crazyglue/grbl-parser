@@ -1,12 +1,11 @@
 import { Extractor } from '../../dist/index.js'
-import chai from 'chai'
-const expect = chai.expect
 import { validStrings } from '../spec_constants.js'
+import { describe, it, expect, beforeEach } from 'vitest'
 
 var extractor
 
 describe('Extractor', function() {
-  before(function() {
+  beforeEach(function() {
     extractor = new Extractor()
   })
 

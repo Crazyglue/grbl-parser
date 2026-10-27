@@ -1,8 +1,6 @@
 import { Checker } from '../dist/index.js'
-import chai from 'chai'
-const expect = chai.expect
 import * as constants from './spec_constants.js'
-import _ from 'lodash'
+import { describe, it, expect } from 'vitest'
 
 var check
 
@@ -13,9 +11,10 @@ var generateTests = function(func, messageType) {
 
 var generateFalseTest = function(func, avoidMessageType) {
   describe("for invalid strings", function() {
-    _.map(constants.validStrings, function(value, key) {
+    Object.entries(constants.validStrings).forEach(function(entry) {
+      var key = entry[0]
       if (key != avoidMessageType) {
-        _.map(constants.validStrings[key], function(value, key) {
+        entry[1].forEach(function(value) {
           it('should return false for ' + value, function() {
             expect(func(value)).to.be.false
           })
@@ -27,7 +26,7 @@ var generateFalseTest = function(func, avoidMessageType) {
 
 var generateTrueTest = function(func, messageType) {
   describe('for valid strings', function() {
-    _.map(constants.validStrings[messageType], function(value) {
+    constants.validStrings[messageType].forEach(function(value) {
       it('should return true for ' + value, function() {
         expect(func(value)).to.be.true
       })

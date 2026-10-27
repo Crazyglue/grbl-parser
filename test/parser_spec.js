@@ -1,38 +1,37 @@
 import { Parser, Extractor } from '../dist/index.js'
-import chai from 'chai'
-const expect = chai.expect
 import { validStrings } from './spec_constants.js'
-import sinon from 'sinon'
-import _ from 'lodash'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 var parser, spyFunc
 
 var generateSuccessTest = function(funcName, strings, extractorName) {
   describe('for ' + funcName + ' messages', function() {
-    _.map(strings, function(value, key) {
-      before(function() {
-        parser = new Parser()
-        spyFunc = sinon.spy(parser[extractorName], funcName)
-        sinon.spy(parser, "parseData")
-      })
+    beforeEach(function() {
+      parser = new Parser()
+      spyFunc = vi.spyOn(parser[extractorName], funcName)
+      vi.spyOn(parser, "parseData")
+    })
+
+    strings.forEach(function(value) {
       it('should call ' + funcName + '-related methods for ' + value, function() {
         parser.parseData(value)
-        expect(spyFunc.calledWith(value)).to.be.true
+        expect(spyFunc).to.have.been.calledWith(value)
       })
     })
   })
   describe("for non-status messages", function() {
-    _.map(validStrings, function(value, key) {
-      if (!_.isEqual(validStrings[key], strings)) {
-        _.map(value, function(value, key) {
-          before(function() {
-            parser = new Parser()
-            spyFunc = sinon.spy(parser[extractorName], funcName)
-            sinon.spy(parser, "parseData")
-          })
+    beforeEach(function() {
+      parser = new Parser()
+      spyFunc = vi.spyOn(parser[extractorName], funcName)
+      vi.spyOn(parser, "parseData")
+    })
+
+    Object.entries(validStrings).forEach(function(entry) {
+      if (JSON.stringify(entry[1]) !== JSON.stringify(strings)) {
+        entry[1].forEach(function(value) {
           it('should not call ' + funcName + '-related methods for ' + value, function() {
             parser.parseData(value)
-            expect(spyFunc.calledWith(value)).to.be.false
+            expect(spyFunc).not.have.been.calledWith(value)
           })
         })
       }
@@ -60,26 +59,26 @@ describe('Parser', function() {
 
     it("should dispatch unknown message type for non-grbl strings", function() {
       parser = new Parser()
-      spyFunc = sinon.spy(parser.dispatcher, "dispatch")
+      spyFunc = vi.spyOn(parser.dispatcher, "dispatch")
 
       parser.parseData("jkfldaskl")
 
-      expect(spyFunc.calledWith("unknown")).to.be.true
-      expect(spyFunc.calledWith("status")).to.be.false
-      expect(spyFunc.calledWith("initialize")).to.be.false
-      expect(spyFunc.calledWith("alarm")).to.be.false
-      expect(spyFunc.calledWith("error")).to.be.false
-      expect(spyFunc.calledWith("setting")).to.be.false
-      expect(spyFunc.calledWith("feedbackMessage")).to.be.false
-      expect(spyFunc.calledWith("buildVersion")).to.be.false
-      expect(spyFunc.calledWith("buildOptions")).to.be.false
-      expect(spyFunc.calledWith("gcodeState")).to.be.false
-      expect(spyFunc.calledWith("helpMessage")).to.be.false
-      expect(spyFunc.calledWith("gcodeSystem")).to.be.false
-      expect(spyFunc.calledWith("probeResult")).to.be.false
-      expect(spyFunc.calledWith("echoMessage")).to.be.false
-      expect(spyFunc.calledWith("gcodeStartup")).to.be.false
-      expect(spyFunc.calledWith("startupLine")).to.be.false
+      expect(spyFunc).to.have.been.calledWith("unknown", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("status", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("initialize", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("alarm", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("error", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("setting", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("feedbackMessage", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("buildVersion", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("buildOptions", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("gcodeState", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("helpMessage", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("gcodeSystem", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("probeResult", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("echoMessage", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("gcodeStartup", expect.anything())
+      expect(spyFunc).not.have.been.calledWith("startupLine", expect.anything())
     })
   })
 })
